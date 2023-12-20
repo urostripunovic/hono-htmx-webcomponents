@@ -1,45 +1,39 @@
-import { html } from 'hono/html'
-import { jsxRenderer } from 'hono/jsx-renderer'
+import { html } from "hono/html";
+import { jsxRenderer } from "hono/jsx-renderer";
+import { Todo } from ".";
 
 export const renderer = jsxRenderer(({ children }) => {
-  return html`
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <script src="https://unpkg.com/htmx.org@1.9.3"></script>
-        <script src="https://unpkg.com/hyperscript.org@0.9.9"></script>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <title>Hono + htmx</title>
-      </head>
-      <body>
-        <div class="p-4">
-          <h1 class="text-4xl font-bold mb-4"><a href="/">Todo</a></h1>
-          ${children}
-        </div>
-      </body>
-    </html>
-  `
-})
+    return html`
+        <!DOCTYPE html>
+        <html>
+            <head>
+                <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1.0"
+                />
+                <script src="https://unpkg.com/htmx.org@1.9.3"></script>
+                <script src="https://unpkg.com/hyperscript.org@0.9.9"></script>
+                <script src="https://cdn.tailwindcss.com"></script>
+                <title>Hono + htmx + Web Components</title>
+            </head>
+            <body class="flex flex-col justify-center items-center w-full h-screen p-4 gap-4">
+                ${children}
+                <script src="https://github.com/urostripunovic/hono-htmx-webcomponents/blob/main/src/webcomponent.ts"></script>
+            </body>
+        </html>
+    `;
+});
 
+//Add a todo to the database
 export const AddTodo = () => (
-  <form hx-post="/todo" hx-target="#todo" hx-swap="beforebegin" _="on htmx:afterRequest reset() me" class="mb-4">
-    <div class="mb-2">
-      <input name="title" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg p-2.5" />
-    </div>
-    <button class="text-white bg-blue-700 hover:bg-blue-800 rounded-lg px-5 py-2 text-center" type="submit">
-      Submit
-    </button>
-  </form>
-)
+    <form>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"> Add Todo</button>
+    </form>
+);
 
-export const Item = ({ title, id }: { title: string; id: string }) => (
-  <p
-    hx-delete={`/todo/${id}`}
-    hx-swap="outerHTML"
-    class="flex row items-center justify-between py-1 px-4 my-1 rounded-lg text-lg border bg-gray-100 text-gray-600 mb-2"
-  >
-    {title}
-    <button class="font-medium">Delete</button>
-  </p>
-)
+//Iterate thorugh the todo item
+export const TodoItem = (props: { todo: Todo }) => {
+    const { todoId, title, todoStatus } = props.todo;
+    //Edit knapp, remove knapp och complete knapp
+    return <div id={todoId}>{title} {todoStatus}</div>;
+};
