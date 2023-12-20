@@ -1,31 +1,53 @@
+const template = document.createElement('template');
+
+template.innerHTML = `
+  <button aria-label="decrease"> - </button>
+  <span id="counter_id">0</span>
+  <button aria-label="increase"> + </button>
+
+`;
+
 class MyComponent extends HTMLElement {
-    _shadow;
-    _deletedTodos = [];
-    constructor() {
-        super();
-        this._shadow = this.attachShadow({ mode: "open" });
-        this._render();
-    }
+  constructor() {
+    super();
 
-    connectedCallback() {
-        console.log("-- connectedCallback","Component has mounted")
-        //hämta local storage här ifrån och fyll på div
-    }
+    this._value = 0;
 
-    attributeChangedCallback(name, oldValue, newValue) {
-        //när en knapp trycks så kommer den att renderas om och blir större, dvs rendera om map
-        console.log("-- attributeChangedCallback", name, oldValue, newValue)
-    }
+    this.attachShadow({ mode: 'open' });
 
-    //Gör en div med samma css som de andra två
-    get template() {
-        return `
-            Hello Web Component!!
-        `;
-    }
+    const _shadowRoot = this.shadowRoot;
+    _shadowRoot.appendChild(template.content.cloneNode(true));
 
-    _render() {
-        this._shadow.innerHTML = this.template;
-    }
+    this.valueElement = _shadowRoot.querySelector('#counter_id');
+    this.decreaseButton = _shadowRoot.querySelector(
+      'button[aria-label="decrease"]',
+    );
+    this.increaseButton = _shadowRoot.querySelector(
+      'button[aria-label="increase"]',
+    );
+
+    this.increaseButton.addEventListener('click', () => this.value++);
+    this.decreaseButton.addEventListener('click', () => this.value--);
+  }
+
+  static get observedAttributes() {
+    return ['value'];
+  }
+
+  attributeChangedCallback(attrName, oldValue, newValue) {
+    if (attrName !== 'value') return;
+
+    this.value = parseInt(newValue, 10);
+  }
+
+  set value(value) {
+    this._value = value;
+    this.valueElement.innerText = this._value;
+    
+  }
+
+  get value() {
+    return this._value;
+  }
 }
 customElements.define('my-component', MyComponent);
