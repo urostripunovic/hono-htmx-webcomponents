@@ -1,0 +1,1 @@
+import './views/components/my-component'

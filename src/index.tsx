@@ -4,6 +4,8 @@ import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import Database, { Database as db } from "better-sqlite3";
 import { AddTodo, TodoItem, renderer } from "./components";
+import { serveStatic } from '@hono/node-server/serve-static'
+import { html } from "hono/html";
 const db = new Database("todo.db");
 db.pragma("journal_mode = WAL");
 
@@ -15,6 +17,7 @@ type Bindings = {
 };
 
 const app = new Hono<{ Bindings: Bindings }>();
+app.use("*", serveStatic({ root: './' }))
 //middleware for att rendera html
 app.use("*", renderer);
 app.use("*", cors());
@@ -45,9 +48,10 @@ app.get("/", (c) => {
                     {uncompletedTodos.map((todo) => (
                         <TodoItem todo={todo} />
                     ))}
-                    <my-component></my-component>
+                    <my-component _name="click me"></my-component>
                 </span>
                 <AddTodo />
+                
             </div>
         </>
     );

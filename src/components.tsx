@@ -1,6 +1,7 @@
-import { html } from "hono/html";
+import { html, raw } from "hono/html";
 import { jsxRenderer } from "hono/jsx-renderer";
 import { Todo } from ".";
+import fs from "fs";
 
 export const renderer = jsxRenderer(({ children }) => {
     return html`
@@ -16,8 +17,11 @@ export const renderer = jsxRenderer(({ children }) => {
                 <script src="https://cdn.tailwindcss.com"></script>
                 <title>Hono🔥 + HTMX + Web Components</title>
             </head>
-            <body class="flex flex-col justify-center items-center w-full h-screen p-4 gap-4">
-                ${children}
+            <body
+                class="flex flex-col justify-center items-center w-full h-screen p-4 gap-4"
+            >
+                ${children}   
+                <script src="static/views/components/my-component.js"></script>             
             </body>
         </html>
     `;
@@ -26,7 +30,9 @@ export const renderer = jsxRenderer(({ children }) => {
 //Add a todo to the database
 export const AddTodo = () => (
     <form>
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"> Add Todo</button>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+            Add Todo
+        </button>
     </form>
 );
 
@@ -34,5 +40,9 @@ export const AddTodo = () => (
 export const TodoItem = (props: { todo: Todo }) => {
     const { todoId, title, todoStatus } = props.todo;
     //Edit knapp, remove knapp och complete knapp
-    return <div id={todoId}>{title} {todoStatus}</div>;
+    return (
+        <div id={todoId}>
+            {title} {todoStatus}
+        </div>
+    );
 };
