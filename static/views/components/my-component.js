@@ -4,7 +4,6 @@ template.innerHTML = `
   <button aria-label="decrease"> - </button>
   <span id="counter_id">0</span>
   <button aria-label="increase"> + </button>
-
 `;
 
 class MyComponent extends HTMLElement {
@@ -43,7 +42,6 @@ class MyComponent extends HTMLElement {
   set value(value) {
     this._value = value;
     this.valueElement.innerText = this._value;
-    
   }
 
   get value() {
