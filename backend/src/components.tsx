@@ -14,11 +14,10 @@ export const renderer = jsxRenderer(({ children }) => {
                 <script src="https://unpkg.com/htmx.org@1.9.3"></script>
                 <script src="https://unpkg.com/hyperscript.org@0.9.9"></script>
                 <script src="https://cdn.tailwindcss.com"></script>
-                <title>Hono + htmx + Web Components</title>
+                <title>Hono🔥 + HTMX + Web Components</title>
             </head>
             <body class="flex flex-col justify-center items-center w-full h-screen p-4 gap-4">
                 ${children}
-                <script src="https://github.com/urostripunovic/hono-htmx-webcomponents/blob/main/src/webcomponent.ts"></script>
             </body>
         </html>
     `;

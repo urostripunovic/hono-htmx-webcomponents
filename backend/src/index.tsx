@@ -4,7 +4,6 @@ import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import Database, { Database as db } from "better-sqlite3";
 import { AddTodo, TodoItem, renderer } from "./components";
-
 const db = new Database("todo.db");
 db.pragma("journal_mode = WAL");
 
