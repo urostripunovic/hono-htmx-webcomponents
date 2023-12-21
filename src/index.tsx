@@ -53,8 +53,7 @@ app.get("/", (c) => {
                     {uncompletedTodos.map((todo) => (
                         <TodoItem todo={todo} />
                     ))}
-                    <my-component>
-                    </my-component>
+                    <my-component></my-component>
                 </span>
                 <AddTodo />
                 

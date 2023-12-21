@@ -8,7 +8,7 @@ class MyComponent extends HTMLElement {
 
   private render() {
     this.innerHTML = `
-      <p class="font-bold">Hello World!</p>
+      <p class="font-bold">Hello World!!!</p>
     `;
   }
 }

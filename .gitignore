@@ -1,4 +1,7 @@
 node_modules
+todo.db
+todo.db-shm
+todo.db-wal
 
 # Logs
 logs
