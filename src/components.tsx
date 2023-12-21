@@ -21,8 +21,7 @@ export const renderer = jsxRenderer(({ children }) => {
                 class="flex flex-col justify-center items-center w-full h-screen p-4 gap-4"
             >
                 ${children}   
-                <script src="static/views/components/my-component.js"></script>
-                <script src="static/views/components/counter-component.js"></script>
+                <script src="dist/bundle.js"></script>
             </body>
         </html>
     `;

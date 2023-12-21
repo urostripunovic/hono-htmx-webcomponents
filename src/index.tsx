@@ -18,7 +18,6 @@ type Bindings = {
 
 const app = new Hono<{ Bindings: Bindings }>();
 //undvik att använda * för att servera filer för de har tillgång till databasen på detta sätt
-app.use('/static/*', serveStatic({ root: './' })) //serverar bara filer från static folder 
 app.use('/dist/*', serveStatic({ root: './' }))
 app.use('*', serveStatic({ root: './' }))
 //middleware for att rendera html
@@ -55,7 +54,6 @@ app.get("/", (c) => {
                         <TodoItem todo={todo} />
                     ))}
                     <my-component>
-                        lol vad vill du?
                     </my-component>
                 </span>
                 <AddTodo />
