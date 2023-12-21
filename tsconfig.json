@@ -6,7 +6,8 @@
     "esModuleInterop": true,
     "lib": [ 
       "dom",
-      "esnext"
+      "esnext",
+      "dom.iterable"
     ],
     "strict": true,
     "jsx": "react-jsx",

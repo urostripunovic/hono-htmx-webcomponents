@@ -6,7 +6,7 @@ template.innerHTML = `
   <button aria-label="increase"> + </button>
 `;
 
-class MyComponent extends HTMLElement {
+export class CounterComponent extends HTMLElement {
   constructor() {
     super();
 
@@ -48,4 +48,5 @@ class MyComponent extends HTMLElement {
     return this._value;
   }
 }
-customElements.define('my-component', MyComponent);
+
+if(!customElements.get('counter-component')) customElements.define('counter-component', CounterComponent);

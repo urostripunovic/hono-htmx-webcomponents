@@ -1,7 +1,6 @@
-import { html, raw } from "hono/html";
+import { html } from "hono/html";
 import { jsxRenderer } from "hono/jsx-renderer";
 import { Todo } from ".";
-import fs from "fs";
 
 export const renderer = jsxRenderer(({ children }) => {
     return html`
@@ -11,6 +10,7 @@ export const renderer = jsxRenderer(({ children }) => {
                 <meta
                     name="viewport"
                     content="width=device-width, initial-scale=1.0"
+                    charset="UTF-8"
                 />
                 <script src="https://unpkg.com/htmx.org@1.9.3"></script>
                 <script src="https://unpkg.com/hyperscript.org@0.9.9"></script>
@@ -21,7 +21,8 @@ export const renderer = jsxRenderer(({ children }) => {
                 class="flex flex-col justify-center items-center w-full h-screen p-4 gap-4"
             >
                 ${children}   
-                <script src="static/views/components/my-component.js"></script>             
+                <script src="static/views/components/my-component.js"></script>
+                <script src="static/views/components/counter-component.js"></script>
             </body>
         </html>
     `;

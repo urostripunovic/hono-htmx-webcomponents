@@ -4,8 +4,8 @@ import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import Database, { Database as db } from "better-sqlite3";
 import { AddTodo, TodoItem, renderer } from "./components";
+import { readFile } from "node:fs/promises"
 import { serveStatic } from '@hono/node-server/serve-static'
-import { html } from "hono/html";
 const db = new Database("todo.db");
 db.pragma("journal_mode = WAL");
 
@@ -17,7 +17,10 @@ type Bindings = {
 };
 
 const app = new Hono<{ Bindings: Bindings }>();
-app.use("*", serveStatic({ root: './' }))
+//undvik att använda * för att servera filer för de har tillgång till databasen på detta sätt
+app.use('/static/*', serveStatic({ root: './' })) //serverar bara filer från static folder 
+app.use('/dist/*', serveStatic({ root: './' }))
+app.use('*', serveStatic({ root: './' }))
 //middleware for att rendera html
 app.use("*", renderer);
 app.use("*", cors());
@@ -28,6 +31,9 @@ export type Todo = {
     title: string;
     todoStatus: number;
 };
+
+
+//testa så att man kan använda tailwind css med web components då shadowDom är open
 
 //Matta in html filer osv
 app.get("/", (c) => {
@@ -48,7 +54,9 @@ app.get("/", (c) => {
                     {uncompletedTodos.map((todo) => (
                         <TodoItem todo={todo} />
                     ))}
-                    <my-component _name="click me"></my-component>
+                    <my-component>
+                        lol vad vill du?
+                    </my-component>
                 </span>
                 <AddTodo />
                 
@@ -56,6 +64,15 @@ app.get("/", (c) => {
         </>
     );
 });
+
+app.get("/test", async () => {
+    const page = await readFile("static/views/index.html", "utf-8")
+    return new Response(page, {
+        headers: {
+            "Content-Type": "text/html",
+        }
+    })
+})
 
 const port = parseInt(process.env.PORT!) || 3000;
 serve({
