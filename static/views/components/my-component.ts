@@ -1,19 +1,24 @@
 class MyComponent extends HTMLElement {
-  constructor() {
-      super();
-      this.render();
-  }
-  
-  connectedCallback() {}
+    private shadow: ShadowRoot;
 
-  private render() {
-    this.innerHTML = `
-      <p class="font-bold">Hello World!!!</p>
-    `;
-  }
+    constructor() {
+        super();
+        this.shadow = this.attachShadow({ mode: 'open' });
+
+        const template = document.createElement('template');
+
+        template.innerHTML = `
+            <link href="static/assets/output.css" rel="stylesheet">
+            <p class="font-bold">This is a web component with the shadow dom open</p>
+            <slot name="apa"></slot>
+            <slot />
+        `;
+
+        this.shadow.appendChild(template.content.cloneNode(true));
+    }
+
+    connectedCallback() {}
 }
 
-if(!customElements.get('my-component')) customElements.define('my-component', MyComponent);
-
-//add for tailwind css styling, but that styles the component at run time instead of compile time
-//<link rel="stylesheet" href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" />
+if (!customElements.get('my-component'))
+    customElements.define('my-component', MyComponent);

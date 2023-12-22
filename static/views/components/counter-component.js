@@ -35,7 +35,6 @@ export class CounterComponent extends HTMLElement {
 
   attributeChangedCallback(attrName, oldValue, newValue) {
     if (attrName !== 'value') return;
-
     this.value = parseInt(newValue, 10);
   }
 

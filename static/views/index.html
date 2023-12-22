@@ -16,7 +16,21 @@
     >
         <h1 class="text-4xl font-bold">Hono🔥 + HTMX + Web Components</h1>
         <counter-component></counter-component>
-        <my-component></my-component>
+        <my-component>
+            <h1 slot="apa" class="border-solid border-2 border-sky-500">
+                Hi this is a named slot
+            </h1>
+            <div class="border-solid border-2 border-violet-500">
+                <h1 class="font-bold text-red-500"> This is not </h1>
+                <h1>a name slot</h1>
+                Random text with no HTML tag
+            </div>
+        </my-component>
+        <noshadow-component name="#cool-div-tag2">
+            <h1 id="cool-h1-tag" class="text-cyan-500">Trying to add in children</h1>
+            <div id="cool-div-tag" class="p-2 border-solid border-2 border-purple-500">child 1</div>
+            <div id="cool-div-tag2" class="p-2 border-solid border-2 border-purple-500">child 2</div>
+        </noshadow-component>
         <script type="module" src="dist/bundle.js"></script>
     </body>
 </html>
