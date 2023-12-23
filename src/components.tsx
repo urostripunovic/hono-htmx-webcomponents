@@ -19,7 +19,7 @@ export const renderer = jsxRenderer(({ children }) => {
             </head>
             <body
                 class="flex flex-col justify-center items-center w-full h-screen p-4 gap-4"
-            >
+            >   
                 ${children}   
                 <script src="dist/bundle.js"></script>
             </body>

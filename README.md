@@ -25,5 +25,6 @@ open http://localhost:3000
         - [ ] Put JSX todo in a different route
     - [ ] HTML static files
         - [ ] Put HTML todo in a different route
+        - Doesn't work as I want it to, I would need to add a dependency of using a template engine so that I can render dynamic templates since you can't insert a html file in an already existing html file. I'm looking into the following template engines [mustache.js](https://mustache.github.io/mustache.5.html) which works with cloud workers, which I don't use lol. [Nunjucks.js](https://mozilla.github.io/nunjucks/) which is a powerful tool that looks really similar to how [django templates their html](https://docs.djangoproject.com/en/5.0/topics/templates/) and then there's also [ETA](https://eta.js.org/) which is really similar to [EJS](https://ejs.co/) but better I guess, and tbh I don't like the DX of EJS and ETA. And I've seen to have found my fit, [SquirrellyJS](https://squirrelly.js.org/). I will be implementing it after I've done the JSX implementation of the todo app.
     - [ ] Check out AlpineJs
 - [ ] add yarn and pnpm support

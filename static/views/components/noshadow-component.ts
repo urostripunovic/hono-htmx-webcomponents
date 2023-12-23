@@ -10,6 +10,8 @@ class NoShadowComponent extends HTMLElement {
                 Hello from the web component with no shadow dom
             </div>
         `;
+        //console.log(this.hasAttribute("name"))
+        !this.hasAttribute("name") && this.appendChild(this.template.content.cloneNode(true))
     }
 
     connectedCallback() {}
@@ -21,10 +23,8 @@ class NoShadowComponent extends HTMLElement {
             'old: ' + oldValue,
             'new: ' + newValue
         );
-        this.insertBefore(
-            this.template.content.cloneNode(true),
-            document.querySelector(newValue)
-        );
+        //will only be called if a prop is passed, will be appended to the end either way
+        this.insertBefore(this.template.content.cloneNode(true), document.querySelector(newValue));
     }
 }
 
