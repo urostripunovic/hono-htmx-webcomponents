@@ -33,3 +33,4 @@ open http://localhost:3000
 - [ ] Check out how to use tailwind inside a open shadow dom again.
 - [ ] Add yarn and pnpm support
 - [ ] Create a pull request for better error handling and documentation for [SquirrellyJS](https://squirrelly.js.org/).
+- [ ] Create intellisense and auto complete for SquirrellyJS.
