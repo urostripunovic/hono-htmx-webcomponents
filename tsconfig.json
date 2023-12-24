@@ -9,6 +9,7 @@
       "esnext",
       "dom.iterable"
     ],
+    "plugins": [{ "name": "typescript-plugin-css-modules" }],
     "strict": true,
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx",

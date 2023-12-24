@@ -3,6 +3,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { secureHeaders } from 'hono/secure-headers'
+import { compress } from 'hono/compress';
 import Database, { Database as db } from 'better-sqlite3';
 import { AddTodo, TodoItem, renderer } from './components';
 import { serveStatic } from '@hono/node-server/serve-static';
@@ -22,7 +23,8 @@ const app = new Hono<{ Bindings: Bindings }>();
 app.use('/dist/*', serveStatic({ root: './' }));
 app.use('*', cors());
 app.use('*', logger());
-app.use('*', secureHeaders())
+app.use('*', secureHeaders());
+app.use('*', compress());
 
 //JSX template engine render middleware
 app.use('/jsxRender/*', renderer);
@@ -68,6 +70,12 @@ app.get("/template", c => {
         'index', 
         //@ts-ignore
         { title:"Hello this is the template engine speaking" })
+}).get("/template/extends", c => {
+    //@ts-ignore
+    return c.render('extends', {
+        name: "Foo",
+        title:"Bar"
+    })
 })
 
 const port = parseInt(process.env.PORT!) || 3000;

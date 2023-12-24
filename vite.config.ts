@@ -1,13 +1,22 @@
-import { resolve } from "path";
-import { defineConfig } from "vite";
+import { resolve } from 'path';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
-    plugins: [],
+    plugins: [
+        require('autoprefixer'),
+        require('tailwindcss'), 
+    ],
     build: {
-        outDir: resolve(__dirname, "dist"),
+        outDir: resolve(__dirname, 'dist'),
         rollupOptions: {
-            input: resolve(__dirname, "static/index.ts"),
-            output: { entryFileNames: "bundle.js" },
-        },
+            input: {
+                main: resolve(__dirname, 'static/index.ts')
+            },
+            output: {
+                entryFileNames: 'bundle.js',
+                assetFileNames: "index.css",
+            },
+            external: ['static/assets/test.module.css']
+        }
     },
 });

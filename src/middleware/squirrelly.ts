@@ -1,4 +1,4 @@
-import { render } from 'squirrelly';
+import * as Sqrl from 'squirrelly';
 import { MiddlewareHandler } from 'hono';
 import { getFilePath } from '../utils/filepath';
 import { getContent } from '../utils/buffer';
@@ -26,11 +26,13 @@ export type SquirrellyOptions = {
 };
 
 /**
- * Middleware for SquirrellyJS template engine. 
+ * Middleware for SquirrellyJS template engine.
  * @param init Provide a root path for your html templates to be rendered makes sure your partials are in the same root
- * @returns 
+ * @returns
  */
-export const squirrelly = (init: SquirrellyOptions = { root: '' }): MiddlewareHandler => {
+export const squirrelly = (
+    init: SquirrellyOptions = { root: '' }
+): MiddlewareHandler => {
     return async (c, next) => {
         const { root } = init;
         c.render = async (filename, params = {}): Promise<Response> => {
@@ -42,8 +44,11 @@ export const squirrelly = (init: SquirrellyOptions = { root: '' }): MiddlewareHa
 
             //use the path to get the file and convert it to an array buffer
             const content = getContent(path);
-            const output = render(content, params, {
-                views: [resolve(root).replace(/\\/g, '/')], //proper file path for includeFile to work
+            const viewPath = resolve(root).replace(/\\/g, '\\');
+            console.log(viewPath)
+            const output = Sqrl.render(content, params, {
+                //proper file path for {{@includeFile(relativePath)}} to work, escape it or change it to backslash
+                views: [viewPath], 
             });
             return c.html(output);
         };
