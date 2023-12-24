@@ -1,4 +1,4 @@
-import './assets/index.css';
-import './views/components/counter-component'
-import './views/components/my-component'
-import './views/components/noshadow-component'
+//import './assets/index.css';
+//import './views/components/TestComponents/my-component'
+//import './views/components/noshadow-component'
+import './views/components/DeletedTodos'

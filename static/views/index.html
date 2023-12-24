@@ -15,12 +15,6 @@
         class="flex flex-col justify-center items-center w-full h-screen p-4 gap-4"
     >
         <h1 class="text-4xl font-bold">Hono🔥 + HTMX + Web Components</h1>
-        {{it.title}} 
-        {{@includeFile('includeFile.html', it) /}}
-        {{@includeFile('components.html') /}}
-        <h2>{{@block('title')}} this is the default title {{/block}}</h2>
-        {{@block('description')}} The default description {{/block}}
-        <counter-component></counter-component>
         <script type="module" src="/dist/bundle.js"></script>
     </body>
 </html>

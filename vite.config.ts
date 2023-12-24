@@ -17,6 +17,6 @@ export default defineConfig({
                 assetFileNames: "index.css",
             },
             external: ['static/assets/test.module.css']
-        }
+        },
     },
 });

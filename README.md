@@ -1,3 +1,9 @@
+- Create a fullstack framework that uses htmx and Web Components for some interactivity
+- Compare the DX between two template engine, i.e html vs jsx
+- Use Web Components/Alpine or both together although I can already feel that the DX of JSX+Alpine won't be good
+- Learn and understand the appeal of template engines (what frontend frameworks are built/inspired on)
+- Understand the server better and learn VanillaJS rather than a framework
+- Learn and understand config-ing... (I hate it here)
 ```
 npm install
 npm run start
@@ -26,7 +32,7 @@ open http://localhost:3000
     - The documentation for [SquirrellyJS](https://squirrelly.js.org/) is a catastrophe, I'll create some pull requests with better error handling when trying to load in partials. You know what the error handling is generally bad lol. The best course of action would be to to create some intellisense and code snippets for this template engine. It's very powerful and perform well against the battle tested ones. The implementation for the template engine middleware wasn't that hard. The hardest part was trying to fetch the damned file from my directory, I had to dig trough the source code of SquirrellyJS so that I could debug my solution. It works now...
     - Some cheat sheets, they have to normal, ifs and loops and the such. But the strongest part of this is the `{{@extendsFile('path/to/layout')}}` command with this the engine will only reload the contents that differ and load the stuff that I've already passed down. Then we have the `{{@block('foo')}}` command that can add new variables as well as reference them using the `{{#foo}}` command in the extended files. If I want to read the documentation of this I could just read [Nunjucks's](https://mozilla.github.io/nunjucks/templating.html), they are pretty similar. I noticed one thing though and that is that SquirrellyJS doesn't provide support for rendering the parent blocks content, you can only change it. I might use Nunjucks seeing as it's great but I don't think I would need those features honestly. But nonetheless I know how to implement my own template engine middleware! I found out as well that if I want to use the extendsFile helper the output file or locations of files aren't in the directory but their own template directory meaning I would need to specify the src in the script tags even further. Nope I just forgot a / lol...
 - [x] See how Lit Element provides tailwind css. 
-    - Didn't need to copy Lit, all I need is to build the tailwind css file every time I add a tailwind class, it builds pretty fast still but I don't think this is actually the most optimal solution especially if one wants to use the shadowdom.
+    - Didn't need to copy Lit, all I need is to build the tailwind css file every time I add a tailwind class, it builds pretty fast still but I don't think this is actually the most optimal solution especially if one wants to use the shadowdom. I want the css and component to mount together but, I tried using css modules but it doesn't seem to work for some reason. The best solution is to honestly not use the shadow dom when working with Web components so they won't be reusable in the sense that if I were to reuse a component I must use tailwind unless I'm shipping a bunch of tailwind code as well.
 - [ ] Implement the Todo app, use [tRPC](https://trpc.io/) or just [htmx](https://htmx.org/) for the client component
     - [ ] In JSX render 
         - [ ] Put JSX todo in a different route

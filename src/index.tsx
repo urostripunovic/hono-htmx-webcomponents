@@ -52,7 +52,7 @@ app.get('/jsxRender', (c) => {
                     {uncompletedTodos.map((todo) => (
                         <TodoItem todo={todo} />
                     ))}
-                    <my-component></my-component>
+                    <deleted-todos></deleted-todos>
                 </span>
                 <AddTodo />
             </div>
@@ -66,16 +66,7 @@ app.use("/template/*", squirrelly({
 }));
 
 app.get("/template", c => {
-    return c.render(
-        'index', 
-        //@ts-ignore
-        { title:"Hello this is the template engine speaking" })
-}).get("/template/extends", c => {
-    //@ts-ignore
-    return c.render('extends', {
-        name: "Foo",
-        title:"Bar"
-    })
+    return c.render('index')
 })
 
 const port = parseInt(process.env.PORT!) || 3000;
