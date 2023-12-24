@@ -10,7 +10,8 @@ npm run start
 ```
 
 ```
-open http://localhost:3000
+open http://localhost:3000/jsxRender for JSX render
+open http://localhost:3000/template for Template Engine rendering
 ```
 
 - [x] See if static html files can be severed along with [Web Components](https://www.webcomponents.org/)
