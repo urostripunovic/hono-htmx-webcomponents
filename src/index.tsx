@@ -2,11 +2,10 @@ import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
+import { secureHeaders } from 'hono/secure-headers'
 import Database, { Database as db } from 'better-sqlite3';
 import { AddTodo, TodoItem, renderer } from './components';
-import { readFile } from 'node:fs/promises';
 import { serveStatic } from '@hono/node-server/serve-static';
-import { jsxRenderer } from 'hono/jsx-renderer';
 import { squirrelly } from './middleware/squirrelly';
 const db = new Database('todo.db');
 db.pragma('journal_mode = WAL');
@@ -21,20 +20,18 @@ type Bindings = {
 const app = new Hono<{ Bindings: Bindings }>();
 //app.use('*', serveStatic({ root: './' })) //undvik att använda * för att servera filer för de har tillgång till databasen på detta sätt
 app.use('/dist/*', serveStatic({ root: './' }));
-//middleware for att rendera html
-app.use('/jsxRender/*', renderer);
 app.use('*', cors());
 app.use('*', logger());
+app.use('*', secureHeaders())
 
+//JSX template engine render middleware
+app.use('/jsxRender/*', renderer);
 export type Todo = {
     todoId: string;
     title: string;
     todoStatus: number;
 };
 
-//testa så att man kan använda tailwind css med web components då shadowDom är open
-
-//Matta in html filer osv
 app.get('/jsxRender', (c) => {
     const completedTodos = db
         .prepare('SELECT * FROM todo WHERE todoStatus = 1')
@@ -61,21 +58,16 @@ app.get('/jsxRender', (c) => {
     );
 });
 
-app.get('/test', async () => {
-    const page = await readFile('static/views/index.html/', 'utf-8');
-    return new Response(page, {
-        headers: {
-            'Content-Type': 'text/html',
-        },
-    });
-});
-
+//Template engine middleware
 app.use("/template/*", squirrelly({
     root: 'static/views/',
 }));
+
 app.get("/template", c => {
-    //@ts-ignore
-    return c.render('index', {data: {title:"hej"}})
+    return c.render(
+        'index', 
+        //@ts-ignore
+        { title:"Hello this is the template engine speaking" })
 })
 
 const port = parseInt(process.env.PORT!) || 3000;
