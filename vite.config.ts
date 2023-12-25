@@ -23,6 +23,5 @@ export default defineConfig({
                 assetFileNames: 'index.css',
             },
         },
-        sourcemap: 'inline',
     },
 });

@@ -1,35 +1,38 @@
 class NoShadowComponent extends HTMLElement {
-    private template: HTMLTemplateElement = document.createElement('template');
+  static observedAttributes = ["name"];
 
-    static observedAttributes = ['name'];
-
-    constructor() {
-        super();
-        this.template.innerHTML = `
+  constructor() {
+    super();
+    //console.log(this.hasAttribute("name"))
+    const template: HTMLTemplateElement = document.createElement("template");
+    template.innerHTML = `
             <div id="test" class="p-1 border-solid border-2 border-cyan-800">
-                Hello from the web component with no shadow dom
+            Hello from the web component with no shadow dom
             </div>
-        `;
-        //console.log(this.hasAttribute("name"))
-        !this.hasAttribute("name") && this.appendChild(this.template.content.cloneNode(true))
-    }
+            `;
+    !this.hasAttribute("name") &&
+      this.appendChild(template.content.cloneNode(true));
+  }
 
-    connectedCallback() {}
+  connectedCallback() {}
 
-    attributeChangedCallback(name: string, oldValue: string, newValue: string) {
-        console.log(
-            '-- attributeChangedCallback',
-            'prop: ' + name,
-            'old: ' + oldValue,
-            'new: ' + newValue
-        );
-        //will only be called if a prop is passed, will be appended to the end either way
-        this.insertBefore(this.template.content.cloneNode(true), document.querySelector(newValue));
-    }
+  attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+    console.log(
+      "-- attributeChangedCallback",
+      "prop: " + name,
+      "old: " + oldValue,
+      "new: " + newValue,
+    );
+    //will only be called if a prop is passed, will be appended to the end either way
+    this.insertBefore(
+      template.content.cloneNode(true),
+      document.querySelector(newValue),
+    );
+  }
 }
 
-if (!customElements.get('noshadow-component'))
-    customElements.define('noshadow-component', NoShadowComponent);
+if (!customElements.get("noshadow-component"))
+  customElements.define("noshadow-component", NoShadowComponent);
 
 //this.appendChild(template.content.cloneNode(true)); //is inserted last
 //this.insertBefore(template.content.cloneNode(true), this.firstChild);// if you want it be inserted first

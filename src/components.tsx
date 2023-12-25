@@ -5,7 +5,7 @@ import { Todo } from ".";
 export const renderer = jsxRenderer(({ children }) => {
     return html`
         <!DOCTYPE html>
-        <html>
+        <html lang="en">
             <head>
                 <meta
                     name="viewport"
