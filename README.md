@@ -34,12 +34,16 @@ open http://localhost:3000/template for Template Engine rendering
     - Some cheat sheets, they have to normal, ifs and loops and the such. But the strongest part of this is the `{{@extendsFile('path/to/layout')}}` command with this the engine will only reload the contents that differ and load the stuff that I've already passed down. Then we have the `{{@block('foo')}}` command that can add new variables as well as reference them using the `{{#foo}}` command in the extended files. If I want to read the documentation of this I could just read [Nunjucks's](https://mozilla.github.io/nunjucks/templating.html), they are pretty similar. I noticed one thing though and that is that SquirrellyJS doesn't provide support for rendering the parent blocks content, you can only change it. I might use Nunjucks seeing as it's great but I don't think I would need those features honestly. But nonetheless I know how to implement my own template engine middleware! I found out as well that if I want to use the extendsFile helper the output file or locations of files aren't in the directory but their own template directory meaning I would need to specify the src in the script tags even further. Nope I just forgot a / lol...
 - [x] See how Lit Element provides tailwind css. 
     - Didn't need to copy Lit, all I need is to build the tailwind css file every time I add a tailwind class, it builds pretty fast still but I don't think this is actually the most optimal solution especially if one wants to use the shadowdom. I want the css and component to mount together but, I tried using css modules but it doesn't seem to work for some reason. The best solution is to honestly not use the shadow dom when working with Web components so they won't be reusable in the sense that if I were to reuse a component I must use tailwind unless I'm shipping a bunch of tailwind code as well.
+    - I tried again after integrating vite into my dev experience. Same conclusion as before using a link tag will take a while before the css loads in... I'll see how the dev experience is affected when working with css in this way.
 - [ ] Implement the Todo app, use [tRPC](https://trpc.io/) or just [htmx](https://htmx.org/) for the client component
     - [ ] In JSX render 
         - [ ] Put JSX todo in a different route
     - [ ] HTML static files
         - [ ] Put HTML todo in a different route
     - [ ] Check out AlpineJs.
+- [x] Add Vite dev server support for HMR when developing
+    - I didn't like the fact that I needed to manually refresh the page whenever I made some changes. I already have vite for building my web components there shouldn't be any issues of trying to integrate it towards my project as well.
+    - Wasn't that hard to implement, the `compress()` middleware broke the page but other than that hono has support for vite and if I want to reload the page after a change to my static files then I needed to install a vite plug in called vite restart.
 - [ ] Add yarn and pnpm support
 - [ ] Create a pull request for better error handling and documentation for [SquirrellyJS](https://squirrelly.js.org/).
 - [ ] Create intellisense and auto complete for SquirrellyJS.

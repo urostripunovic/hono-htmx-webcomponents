@@ -1,13 +1,12 @@
-import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { secureHeaders } from 'hono/secure-headers'
-import { compress } from 'hono/compress';
 import Database, { Database as db } from 'better-sqlite3';
 import { AddTodo, TodoItem, renderer } from './components';
 import { serveStatic } from '@hono/node-server/serve-static';
 import { squirrelly } from './middleware/squirrelly';
+
 const db = new Database('todo.db');
 db.pragma('journal_mode = WAL');
 
@@ -24,7 +23,6 @@ app.use('/dist/*', serveStatic({ root: './' }));
 app.use('*', cors());
 app.use('*', logger());
 app.use('*', secureHeaders());
-app.use('*', compress());
 
 //JSX template engine render middleware
 app.use('/jsxRender/*', renderer);
@@ -62,16 +60,11 @@ app.get('/jsxRender', (c) => {
 
 //Template engine middleware
 app.use("/template/*", squirrelly({
-    root: 'static/views/',
+    root: 'src/static/views/',
 }));
 
 app.get("/template", c => {
     return c.render('index')
 })
 
-const port = parseInt(process.env.PORT!) || 3000;
-serve({
-    fetch: app.fetch,
-    port: port,
-});
-console.log(`Running at http://localhost:${port}`);
+export default app;
