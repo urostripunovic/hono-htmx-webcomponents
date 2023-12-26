@@ -1,10 +1,11 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
+import { compress } from 'hono/compress'
 import { secureHeaders } from "hono/secure-headers";
+import { serveStatic } from "@hono/node-server/serve-static";
 import Database, { Database as db } from "better-sqlite3";
 import { AddTodo, TodoItem, renderer } from "./components";
-import { serveStatic } from "@hono/node-server/serve-static";
 import { squirrelly } from "./middleware/squirrelly";
 
 const db = new Database("todo.db");
@@ -20,12 +21,16 @@ type Bindings = {
 const app = new Hono<{ Bindings: Bindings }>();
 //app.use('*', serveStatic({ root: './' })) //undvik att använda * för att servera filer för de har tillgång till databasen på detta sätt
 app.use("/dist/*", serveStatic({ root: "./" }));
-app.use("*", cors());
-app.use("*", logger());
-app.use("*", secureHeaders());
-
+app.use("*", cors(), logger(), secureHeaders());
 //JSX template engine render middleware
 app.use("/jsxRender/*", renderer);
+
+declare module 'hono' {
+  interface ContextRenderer {
+    (content: string | Promise<string>, props?: {}): Response | Promise<Response>
+  }
+}
+
 export type Todo = {
   todoId: string;
   title: string;
@@ -51,11 +56,13 @@ app.get("/jsxRender", (c) => {
           {uncompletedTodos.map((todo) => (
             <TodoItem todo={todo} />
           ))}
+          
           <deleted-todos></deleted-todos>
+          <vite-islands src="LazyLoad" client:media="(max-width: 600px)"></vite-islands>
         </span>
         <AddTodo />
       </div>
-    </>,
+    </>
   );
 });
 

@@ -1,6 +1,12 @@
 import { html } from "hono/html";
 import { jsxRenderer } from "hono/jsx-renderer";
-import { Todo } from ".";
+//import { Todo } from ".";
+
+export type Todo = {
+  todoId: string;
+  title: string;
+  todoStatus: number;
+};
 
 export const renderer = jsxRenderer(({ children }) => {
   return html`
@@ -18,7 +24,7 @@ export const renderer = jsxRenderer(({ children }) => {
           </>
         ) : (
           <>
-            <script type='module' src='src/static/index.ts'></script>
+            <script type='module' src='src/static/client.ts'></script>
           </>
         )}
         <script src="https://unpkg.com/htmx.org@1.9.3"></script>

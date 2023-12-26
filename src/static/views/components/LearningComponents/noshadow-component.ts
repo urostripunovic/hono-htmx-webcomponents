@@ -1,17 +1,18 @@
 class NoShadowComponent extends HTMLElement {
   static observedAttributes = ["name"];
+  private template: HTMLTemplateElement;
 
   constructor() {
     super();
     //console.log(this.hasAttribute("name"))
-    const template: HTMLTemplateElement = document.createElement("template");
-    template.innerHTML = `
+    this.template = document.createElement("template");
+    this.template.innerHTML = `
             <div id="test" class="p-1 border-solid border-2 border-cyan-800">
             Hello from the web component with no shadow dom
             </div>
             `;
     !this.hasAttribute("name") &&
-      this.appendChild(template.content.cloneNode(true));
+      this.appendChild(this.template.content.cloneNode(true));
   }
 
   connectedCallback() {}
@@ -25,7 +26,7 @@ class NoShadowComponent extends HTMLElement {
     );
     //will only be called if a prop is passed, will be appended to the end either way
     this.insertBefore(
-      template.content.cloneNode(true),
+      this.template.content.cloneNode(true),
       document.querySelector(newValue),
     );
   }

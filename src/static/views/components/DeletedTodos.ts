@@ -1,11 +1,11 @@
-export class DeletedTodos extends HTMLElement {
+class DeletedTodos extends HTMLElement {
     private template: HTMLTemplateElement = document.createElement('template');
     static observedAttributes = ['name'];
     constructor() {
         super();
         this.template.innerHTML = `
             <div id="test" class="p-1 border-solid border-2 border-cyan-800">
-                Deleted Todos !!!
+                Deleted Todos
             </div>
         `;
         //console.log(this.hasAttribute("name"))
