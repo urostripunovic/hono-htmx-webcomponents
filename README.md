@@ -48,6 +48,11 @@ open http://localhost:3000/template for Template Engine rendering
 - [x] Add Vite dev server support for HMR when developing
     - I didn't like the fact that I needed to manually refresh the page whenever I made some changes. I already have vite for building my web components there shouldn't be any issues of trying to integrate it towards my project as well.
     - Wasn't that hard to implement, the `compress()` middleware broke the page but other than that hono has support for vite and if I want to reload the page after a change to my static files then I needed to install a vite plug in called vite restart.
-- [ ] Add yarn and pnpm support
-- [ ] Create a pull request for better error handling and documentation for [SquirrellyJS](https://squirrelly.js.org/).
-- [ ] Create intellisense and auto complete for SquirrellyJS.
+- [ ] Deploy the application
+    - Prod prep done with script tags
+
+### If I have time and energy!
+- [ ] SonikJS, Honos version of what I want to do but with jsx and island solutions like Astro I think.
+    - [ ] Whiteboard dev has an example uploaded to [youtube](https://www.youtube.com/watch?v=Ptqaqls2SYo) 
+- [ ] Create some pull requests for [SquirrellyJS](https://squirrelly.js.org/)?.
+- [ ] Create intellisense and auto complete for SquirrellyJS?

@@ -6,6 +6,11 @@
       content="width=device-width, initial-scale=1.0"
       charset="UTF-8"
     />
+    {{@if(it.prod)}} 
+      <script type='module' src='/dist/bundle.js'></script>
+    {{#else}} 
+      <script type='module' src='src/static/index.ts'></script>
+    {{/if}}
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/htmx.org@1.9.3"></script>
     <script src="https://unpkg.com/hyperscript.org@0.9.9"></script>
@@ -16,8 +21,6 @@
   >
     <h1 class="text-4xl font-bold">Hono🔥 + HTMX + Web Components!!</h1>
     <deleted-todos></deleted-todos>
-    <my-component></my-component>
     hej hej!!
-    <script type="module" src="/dist/bundle.js"></script>
   </body>
 </html>

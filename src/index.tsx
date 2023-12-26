@@ -20,7 +20,6 @@ type Bindings = {
 const app = new Hono<{ Bindings: Bindings }>();
 //app.use('*', serveStatic({ root: './' })) //undvik att använda * för att servera filer för de har tillgång till databasen på detta sätt
 app.use("/dist/*", serveStatic({ root: "./" }));
-app.use("/src/static/assets/*", serveStatic({ root: "./" }));
 app.use("*", cors());
 app.use("*", logger());
 app.use("*", secureHeaders());
@@ -45,6 +44,7 @@ app.get("/jsxRender", (c) => {
       <h1 class="text-4xl font-bold">Hono🔥 + HTMX + Web Components</h1>
       <div>
         <span class="flex flex-row gap-4">
+          <my-component></my-component>
           {completedTodos.map((todo) => (
             <TodoItem todo={todo} />
           ))}

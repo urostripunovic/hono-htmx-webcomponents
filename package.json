@@ -3,7 +3,7 @@
     "dev": "vite dev",
     "build-dev": "vite build --watch",
     "build": "vite build",
-    "deploy": "vite build and ",
+    "deploy": "vite build && vite",
     "start": "concurrently --kill-others \"npm:dev\" \"npm:build-dev\""
   },
   "dependencies": {
