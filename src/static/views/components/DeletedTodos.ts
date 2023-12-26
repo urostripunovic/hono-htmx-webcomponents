@@ -20,5 +20,5 @@ class DeletedTodos extends HTMLElement {
     }
 }
 
-if (!customElements.get('deleted-todos'))
-    customElements.define('deleted-todos', DeletedTodos);
+if (!customElements.get('deletedtodos-component'))
+    customElements.define('deletedtodos-component', DeletedTodos);

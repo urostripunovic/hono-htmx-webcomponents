@@ -49,16 +49,13 @@ app.get("/jsxRender", (c) => {
       <h1 class="text-4xl font-bold">Hono🔥 + HTMX + Web Components</h1>
       <div>
         <span class="flex flex-row gap-4">
-          <my-component></my-component>
           {completedTodos.map((todo) => (
             <TodoItem todo={todo} />
           ))}
           {uncompletedTodos.map((todo) => (
             <TodoItem todo={todo} />
           ))}
-          
-          <deleted-todos></deleted-todos>
-          <vite-islands src="LazyLoad" client:media="(max-width: 600px)"></vite-islands>
+          <deletedtodos-component></deletedtodos-component>
         </span>
         <AddTodo />
       </div>
