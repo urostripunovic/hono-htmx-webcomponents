@@ -1,14 +1,10 @@
 import components from "./views/components";
 
 class Island extends HTMLElement {
-  constructor() {
-    super();
-  }
-
   async connectedCallback() {
     const src = this.getAttribute("src") ?? "";
     const componentLoader = components[src];
-    if (!componentLoader) throw new Error(`${src} is not a component! Check your islands/index.`);
+    if (!componentLoader) throw new Error(`${src} is not a component! Check your components/index.`);
 
     const clientMediaQuery = this.getAttribute("client:media");
     if (clientMediaQuery) await media({ query: clientMediaQuery });

@@ -55,7 +55,7 @@ app.get("/jsxRender", (c) => {
           {uncompletedTodos.map((todo) => (
             <TodoItem todo={todo} />
           ))}
-          <deletedtodos-component></deletedtodos-component>
+          <deleted-todos></deleted-todos>
         </span>
         <AddTodo />
       </div>
