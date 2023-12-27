@@ -1,11 +1,16 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
-import { compress } from 'hono/compress'
 import { secureHeaders } from "hono/secure-headers";
 import { serveStatic } from "@hono/node-server/serve-static";
 import Database, { Database as db } from "better-sqlite3";
-import { AddTodo, TodoItem, renderer } from "./components";
+import {
+  AddTodo,
+  TodoItem,
+  renderer,
+  Todos,
+  NotCompletedTodos,
+} from "./components";
 import { squirrelly } from "./middleware/squirrelly";
 
 const db = new Database("todo.db");
@@ -25,9 +30,12 @@ app.use("*", cors(), logger(), secureHeaders());
 //JSX template engine render middleware
 app.use("/jsxRender/*", renderer);
 
-declare module 'hono' {
+declare module "hono" {
   interface ContextRenderer {
-    (content: string | Promise<string>, props?: {}): Response | Promise<Response>
+    (
+      content: string | Promise<string>,
+      props?: {},
+    ): Response | Promise<Response>;
   }
 }
 
@@ -46,21 +54,26 @@ app.get("/jsxRender", (c) => {
     .all() as unknown[] as Todo[];
   return c.render(
     <>
-      <h1 class="text-4xl font-bold">Hono🔥 + HTMX + Web Components</h1>
-      <div>
-        <span class="flex flex-row gap-4">
-          {completedTodos.map((todo) => (
-            <TodoItem todo={todo} />
-          ))}
-          {uncompletedTodos.map((todo) => (
-            <TodoItem todo={todo} />
-          ))}
-          <deleted-todos></deleted-todos>
-          <client-islands src="LazyLoad" client:media="(max-width: 600px)"></client-islands>
+      <h1 class="flex justify-between text-4xl font-bold">
+        Hono🔥 + HTMX + Web Components
+      </h1>
+      <>
+        <span class="flex gap-2">
+          <div class="w-full">
+            {uncompletedTodos.map((todo) => (
+              <TodoItem todo={todo} />
+            ))}
+          </div>
+          <div class="w-full">
+            {completedTodos.map((todo) => (
+              <TodoItem todo={todo} />
+            ))}
+          </div>
+          <client-islands src="DeletedTodos" client:load></client-islands>
         </span>
         <AddTodo />
-      </div>
-    </>
+      </>
+    </>,
   );
 });
 

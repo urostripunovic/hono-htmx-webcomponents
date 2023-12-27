@@ -1,4 +1,5 @@
-class NoShadowComponent extends HTMLElement {
+const NoShadowComponentCustomName = 'noshadow-dom'
+export default class NoShadowDom extends HTMLElement {
   static observedAttributes = ["name"];
   private template: HTMLTemplateElement;
 
@@ -30,10 +31,14 @@ class NoShadowComponent extends HTMLElement {
       document.querySelector(newValue),
     );
   }
+
+  get CustomElementsName() {
+    return NoShadowComponentCustomName;
+}
 }
 
-if (!customElements.get("noshadow-component"))
-  customElements.define("noshadow-component", NoShadowComponent);
+if (!customElements.get(NoShadowComponentCustomName))
+  customElements.define(NoShadowComponentCustomName, NoShadowDom);
 
 //this.appendChild(template.content.cloneNode(true)); //is inserted last
 //this.insertBefore(template.content.cloneNode(true), this.firstChild);// if you want it be inserted first

@@ -59,7 +59,7 @@ function load() {
 /**
  * Hydrate this component when the page is in an idle state
  */
-function idle(){
+function idle() {
   return new Promise(function (resolve) {
     if ('requestIdleCallback' in window) {
       (window as any).requestIdleCallback(resolve);

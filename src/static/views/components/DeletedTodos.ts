@@ -1,8 +1,10 @@
-class DeletedTodos extends HTMLElement {
+const DeletedTodosCustomName = 'deleted-todos';
+export default class DeletedTodos extends HTMLElement {
     private template: HTMLTemplateElement = document.createElement('template');
     static observedAttributes = ['name'];
     constructor() {
         super();
+        console.log(this.childNodes)
         this.template.innerHTML = `
             <div id="test" class="p-1 border-solid border-2 border-cyan-800">
                 Deleted Todos
@@ -18,7 +20,11 @@ class DeletedTodos extends HTMLElement {
         //will only be called if a prop is passed, will be appended to the end either way
         this.insertBefore(this.template.content.cloneNode(true), document.querySelector(newValue));
     }
+
+    get CustomElementsName() {
+        return DeletedTodosCustomName;
+    }
 }
 
-if (!customElements.get('deleted-todos'))
-    customElements.define('deleted-todos', DeletedTodos);
+if (!customElements.get(DeletedTodosCustomName))
+    customElements.define(DeletedTodosCustomName, DeletedTodos);
