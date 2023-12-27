@@ -20,21 +20,21 @@ export const renderer = jsxRenderer(({ children }) => {
         />
         ${import.meta.env.PROD ? (
           <>
-            <script type='module' src='/dist/bundle.js'></script>
+            <script type="module" src="/dist/bundle.js"></script>
           </>
         ) : (
           <>
-            <script type='module' src='src/static/client.ts'></script>
+            <script type="module" src="src/static/client.ts"></script>
           </>
         )}
         <script src="https://unpkg.com/htmx.org@1.9.3"></script>
         <script src="https://unpkg.com/hyperscript.org@0.9.9"></script>
         <script src="https://cdn.tailwindcss.com"></script>
         <title>Hono🔥 + HTMX + Web Components</title>
-        </head>
-        <body
+      </head>
+      <body
         class="flex h-screen w-full flex-col items-center justify-center gap-4 p-4"
-        >
+      >
         ${children}
       </body>
     </html>

@@ -56,6 +56,7 @@ app.get("/jsxRender", (c) => {
             <TodoItem todo={todo} />
           ))}
           <deleted-todos></deleted-todos>
+          <client-islands src="LazyLoad" client:media="(max-width: 600px)"></client-islands>
         </span>
         <AddTodo />
       </div>

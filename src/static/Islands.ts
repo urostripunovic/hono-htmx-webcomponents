@@ -5,7 +5,7 @@ class Island extends HTMLElement {
     const src = this.getAttribute("src") ?? "";
     const componentLoader = components[src];
     if (!componentLoader) throw new Error(`${src} is not a component! Check your components/index.`);
-
+    
     const clientMediaQuery = this.getAttribute("client:media");
     if (clientMediaQuery) await media({ query: clientMediaQuery });
     if (this.hasAttribute("client:load")) await load();
@@ -75,8 +75,7 @@ function idle(){
  * @returns the name of the custom element of that @component @src
  */
 function getCustomElement(Component: any, src: () => void) {
-  const ClassName = new Component().constructor.name.split(/(?=[A-Z])/);
-  const CustomElement = ClassName.map((e: string) =>e.toLowerCase()).join("-");
+  const CustomElement = new Component().CustomElementsName
   if (!customElements.get(CustomElement)) {
     throw new Error(`${CustomElement} is not a defined custom element in ${src}.`);
   }
