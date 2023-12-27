@@ -14,5 +14,4 @@ export default class LazyLoad extends HTMLElement {
     }
   
 }
-
-customElements.define("lazyload-component", LazyLoad);
+customElements.define("lazy-load", LazyLoad);

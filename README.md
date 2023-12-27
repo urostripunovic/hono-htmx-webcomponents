@@ -50,6 +50,9 @@ open http://localhost:3000/template for Template Engine rendering
     - I didn't like the fact that I needed to manually refresh the page whenever I made some changes. I already have vite for building my web components there shouldn't be any issues of trying to integrate it towards my project as well.
     - Wasn't that hard to implement, the `compress()` middleware broke the page but other than that hono has support for vite and if I want to reload the page after a change to my static files then I needed to install a vite plug in called vite restart.
 - [ ] Create a lazy loaded component of a simple navbar that takes you between, jsx render and template render.
+    - [ ] Try and lazy load a AlpineJS component
+- [x] Implement load and idle from Astro's client directives
+    - As of now if bundle.js is mounted on to the page and all of the imported files in client.ts will be loaded into the browser. Using something like Astro's load, idle, visible and media directives I can instead load in the javascript whenever necessary and not cache as much javascript in the browser. It would've also been cool if I could create a specific naming convention so that I retain the web components names but only add those attribues but at that point I would be DRY. Loot into this + it feels like I'm recreating [Astro](https://github.com/withastro/astro/tree/cf993bc263b58502096f00d383266cd179f331af/packages/astro/src/runtime/client). 
 - [ ] Deploy the application
     - Prod prep done with script tags
 
