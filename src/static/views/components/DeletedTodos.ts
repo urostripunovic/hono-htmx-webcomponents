@@ -1,23 +1,23 @@
 const DeletedTodosCustomName = 'deleted-todos';
 export default class DeletedTodos extends HTMLElement {
     private template: HTMLTemplateElement = document.createElement('template');
-    static observedAttributes = ['name'];
+    static observedAttributes = ['location'];
     constructor() {
         super();
-        console.log(this.childNodes)
         this.template.innerHTML = `
             <div id="test" class="p-1 border-solid border-2 border-cyan-800">
                 Deleted Todos
             </div>
         `;
-        //console.log(this.hasAttribute("name"))
-        !this.hasAttribute("name") && this.appendChild(this.template.content.cloneNode(true))
+        //console.log("constructor", this.hasAttribute("location"))
+        !this.hasAttribute("location") && this.appendChild(this.template.content.cloneNode(true))
     }
 
     connectedCallback() {}
 
     attributeChangedCallback(name: string, oldValue: string, newValue: string) {
         //will only be called if a prop is passed, will be appended to the end either way
+        console.log(name, newValue, oldValue)
         this.insertBefore(this.template.content.cloneNode(true), document.querySelector(newValue));
     }
 

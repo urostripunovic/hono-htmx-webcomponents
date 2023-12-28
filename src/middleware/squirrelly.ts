@@ -45,7 +45,6 @@ export const squirrelly = (
             //use the path to get the file and convert it to an array buffer
             const content = await getContent(path);
             const viewPath = resolve(root).replace(/\\/g, '\\');
-            console.log(viewPath)
             const output = Sqrl.render(content, { ...params, prod: import.meta.env.PROD }, {
                 //proper file path for {{@includeFile(relativePath)}} to work, escape it or change it to backslash
                 views: [viewPath], 

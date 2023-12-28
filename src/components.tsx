@@ -20,18 +20,20 @@ export const renderer = jsxRenderer(({ children }) => {
         />
         ${import.meta.env.PROD ? (
           <>
-            {" "}
-            <script type="module" src="/dist/bundle.js"></script>{" "}
+            <script type="module" src="/dist/bundle.js"></script>
           </>
         ) : (
           <>
-            {" "}
-            <script type="module" src="src/static/client.ts"></script>{" "}
+            <script type="module" src="src/static/client.ts"></script>
           </>
         )}
         <script src="https://unpkg.com/htmx.org@1.9.3"></script>
         <script src="https://unpkg.com/hyperscript.org@0.9.9"></script>
         <script src="https://cdn.tailwindcss.com"></script>
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        />
         <title>Hono🔥 + HTMX + Web Components</title>
       </head>
       <body
@@ -43,93 +45,62 @@ export const renderer = jsxRenderer(({ children }) => {
   `;
 });
 
-export const Todos = (props: { todos: Todo[] }) => {
-  const { todos } = props;
-
-  return (
-    <div>
-      {todos.map(({ todoId, todoStatus, title }: Todo) => {
-        return (
-          <div id={todoId} class="flex items-center gap-4">
-            <input
-              id="default-checkbox"
-              checked
-              type="checkbox"
-              value=""
-              class="h-6 w-6 rounded border-gray-300 bg-gray-100 text-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800"
-            />
-            <label for="default-checkbox" class="text-xl font-semibold">
-              {title}
-            </label>
-          </div>
-        );
-      })}
-    </div>
-  );
-};
-
-export const NotCompletedTodos = (props: { todos: Todo[] }) => {
-  const { todos } = props;
-  return (
-    <div>
-      {todos.map(({ todoId, todoStatus, title }: Todo) => {
-        return (
-          <div id={todoId} class="flex items-center gap-4">
-            <input
-              id="default-checkbox"
-              checked
-              type="checkbox"
-              value=""
-              class="h-6 w-6 rounded border-gray-300 bg-gray-100 text-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800"
-            />
-            <label
-              for="default-checkbox"
-              class="text-xl font-semibold line-through"
-            >
-              {title}
-            </label>
-          </div>
-        );
-      })}
-    </div>
-  );
-};
-
 //Add a todo to the database
 export const AddTodo = () => (
   <form>
-    <button class="rounded-full bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
-      Add Todo
-    </button>
+    <div class="flex flex-row gap-2">
+      <input
+        type="text"
+        placeholder="What is there todo..."
+        class="block w-full rounded-lg bg-gray-200 p-2.5 text-xl"
+      />
+      <button class="block rounded-lg bg-blue-500 px-4 py-2 text-xl font-bold text-white hover:bg-blue-700">
+        Add
+      </button>
+    </div>
   </form>
 );
 
 //Iterate thorugh the todo item
-export const TodoItem = (props: { todo: Todo }) => {
+export const TodoItem = (props: { todo: Todo, type: string }) => {
   const { todoId, title, todoStatus } = props.todo;
   const isChecked = todoStatus === 1 ? true : false;
   //Edit knapp, remove knapp och complete knapp
   return (
     <div
-      id={todoId}
-      class="border-b-1 mb-1 flex h-10 items-center gap-2 rounded border-b-gray-200 p-2 odd:bg-gray-200 hover:odd:bg-gray-50 hover:even:bg-gray-100"
+      id={props.type+todoId}
+      class="border-b-1 group relative mb-2 flex h-10 items-center justify-between gap-2 flex-wrap rounded border-b-gray-200 p-2 transition duration-150 ease-out odd:bg-gray-200 hover:ease-in hover:odd:bg-gray-50 hover:even:bg-gray-100"
     >
-      <input
-        id="default-checkbox"
-        checked={isChecked}
-        type="checkbox"
-        value=""
-        class="cursor-pointer h-6 w-6 rounded-md border-gray-300 bg-gray-100 text-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800"
-      />
-      <label
-        for="default-checkbox"
-        class={`cursor text-xl font-semibold ${
-          isChecked ? "line-through" : ""
-        } line-clamp-3`}
-      >
-        {title}
-      </label>
+      <div class="flex flex-row items-center gap-2">
+        <input
+          id={"default-checkbox"+todoId}
+          checked={isChecked}
+          type="checkbox"
+          value=""
+          class="h-6 w-6 cursor-pointer rounded border-gray-300 bg-gray-100 text-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800"
+        />
+        <label
+          for={"default-checkbox"+todoId}
+          class={`cursor text-xl font-semibold ${
+            isChecked ? "line-through" : ""
+          } line-clamp-3`}
+        >
+          {title}
+        </label>
+      </div>
       {/*add a delete input as well as a edit input*/}
+      <div class="invisible flex flex-row gap-1 group-hover:visible">
+        <button
+          class={`${
+            isChecked ? "hidden" : ""
+          } flex h-8 w-8 cursor-pointer items-center justify-center`}
+        >
+          <i class="fas fa-edit text-cyan-600 transition-all hover:text-lg hover:text-cyan-700"></i>
+        </button>
+        <button class="flex w-3 cursor-pointer items-center justify-center">
+          <i class="fa fa-trash text-red-500 transition-all hover:text-lg hover:text-red-700"></i>
+        </button>
+      </div>
     </div>
   );
 };

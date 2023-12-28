@@ -14,7 +14,8 @@ class Island extends HTMLElement {
 
     const Component = (await componentLoader()).default;
     const DefinedCustomElement = getCustomElement(Component, components[src])
-    this.innerHTML = `<${DefinedCustomElement}></${DefinedCustomElement}>`;
+    const oldInnerHTML = this.innerHTML
+    this.innerHTML = `<${DefinedCustomElement}>${oldInnerHTML}</${DefinedCustomElement}>`;
   }
 }
 customElements.define("client-islands", Island);

@@ -8,8 +8,6 @@ import {
   AddTodo,
   TodoItem,
   renderer,
-  Todos,
-  NotCompletedTodos,
 } from "./components";
 import { squirrelly } from "./middleware/squirrelly";
 
@@ -58,18 +56,22 @@ app.get("/jsxRender", (c) => {
         Hono🔥 + HTMX + Web Components
       </h1>
       <>
-        <span class="flex gap-2">
+        <span class="flex gap-2 flex-wrap-reverse">
           <div class="w-full">
+            <h1 class="text-xl font-thin"> Todos </h1>
             {uncompletedTodos.map((todo) => (
-              <TodoItem todo={todo} />
+              <TodoItem todo={todo} type={"uncompleted"} />
             ))}
           </div>
           <div class="w-full">
+          <h1 class="text-xl font-thin"> Completed Todos </h1>
             {completedTodos.map((todo) => (
-              <TodoItem todo={todo} />
+              <TodoItem todo={todo} type={"completed"}/>
             ))}
           </div>
-          <client-islands src="DeletedTodos" client:load></client-islands>
+          <client-islands src="DeletedTodos" client:load> 
+            <p id="cool-ptag" class="font-bold"> Hej hej </p> 
+          </client-islands>
         </span>
         <AddTodo />
       </>
