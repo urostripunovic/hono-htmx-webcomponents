@@ -47,9 +47,10 @@ export const renderer = jsxRenderer(({ children }) => {
 
 //Add a todo to the database
 export const AddTodo = () => (
-  <form hx-post="/jsxRender" hx-target="#uncompleted" hx-swap="beforebegin">
+  <form hx-post="/jsxRender" hx-target="#uncompleted" hx-swap="beforebegin" _="on htmx:afterRequest reset() me">
     <div class="flex flex-row gap-2 justify-center mb-2">
       <input
+        name="title"
         type="text"
         placeholder="What is there todo..."
         class="block w-full rounded-lg bg-gray-200 p-2.5 text-xl max-w-lg"

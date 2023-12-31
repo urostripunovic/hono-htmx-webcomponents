@@ -6,6 +6,8 @@ import { serveStatic } from "@hono/node-server/serve-static";
 import Database, { Database as db } from "better-sqlite3";
 import { AddTodo, TodoItem, renderer } from "./components";
 import { squirrelly } from "./middleware/squirrelly";
+import { z } from 'zod'
+import { zValidator } from '@hono/zod-validator'
 
 const db = new Database("todo.db");
 db.pragma("journal_mode = WAL");
@@ -80,7 +82,9 @@ app.get("/jsxRender", (c) => {
   );
 });
 
-app.post("/jsxRender", (c) => {
+app.post("/jsxRender", zValidator('form', z.object({
+  title: z.string().min(1)
+})), (c) => {
   console.log("HTMX post request works");
   //get the value from the form and insert it at the top
   return c.html(
