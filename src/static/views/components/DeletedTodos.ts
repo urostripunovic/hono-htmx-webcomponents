@@ -1,5 +1,6 @@
 const DeletedTodosCustomName = 'deleted-todos';
 export default class DeletedTodos extends HTMLElement {
+    private elementChildren: Array<ChildNode> = [];
     private template: HTMLTemplateElement = document.createElement('template');
     static observedAttributes = ['location'];
     constructor() {

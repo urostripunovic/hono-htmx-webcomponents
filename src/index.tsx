@@ -4,11 +4,7 @@ import { logger } from "hono/logger";
 import { secureHeaders } from "hono/secure-headers";
 import { serveStatic } from "@hono/node-server/serve-static";
 import Database, { Database as db } from "better-sqlite3";
-import {
-  AddTodo,
-  TodoItem,
-  renderer,
-} from "./components";
+import { AddTodo, TodoItem, renderer } from "./components";
 import { squirrelly } from "./middleware/squirrelly";
 
 const db = new Database("todo.db");
@@ -55,28 +51,60 @@ app.get("/jsxRender", (c) => {
       <h1 class="flex justify-between text-4xl font-bold">
         Hono🔥 + HTMX + Web Components
       </h1>
-      <>
-        <span class="flex gap-2 flex-wrap-reverse">
+      <div>
+        {/*Change to grid instead*/}
+        <AddTodo />
+        <span class="md:grid md:grid-cols-3 gap-2 flex flex-wrap">
           <div class="w-full">
             <h1 class="text-xl font-thin"> Todos </h1>
             {uncompletedTodos.map((todo) => (
               <TodoItem todo={todo} type={"uncompleted"} />
             ))}
+            <div id="uncompleted"></div>
           </div>
           <div class="w-full">
-          <h1 class="text-xl font-thin"> Completed Todos </h1>
+            <h1 class="text-xl font-thin"> Completed Todos </h1>
             {completedTodos.map((todo) => (
-              <TodoItem todo={todo} type={"completed"}/>
+              <TodoItem todo={todo} type={"completed"} />
             ))}
+            <div id="completed"></div>
           </div>
-          <client-islands src="DeletedTodos" client:load> 
-            <p id="cool-ptag" class="font-bold"> Hej hej </p> 
+          <client-islands src="DeletedTodos" client:load>
+            <p id="cool-ptag" class="font-bold">
+              Hej hej
+            </p>
           </client-islands>
         </span>
-        <AddTodo />
-      </>
+      </div>
     </>,
   );
+});
+
+app.post("/jsxRender", (c) => {
+  console.log("HTMX post request works");
+  //get the value from the form and insert it at the top
+  return c.html(
+    <TodoItem
+      todo={{ todoId: "6", todoStatus: 0, title: "test2" }}
+      type={"uncompleted"}
+    />,
+  );
+});
+
+app.put("/jsxRender/check/:id", (c) => {
+  console.log("HTMX post check works");
+  return c.body(null, 204)
+});
+
+app.put("/jsxRender/edit/:id", (c) => {
+  console.log("HTMX post edit works");
+  return c.body(null, 204)
+});
+
+app.delete("/jsxRender/todo/:id", (c) => {
+  const id = c.req.param('id');
+  console.log("HTMX delete edit works", id);
+  return c.body(null, 204)
 });
 
 //Template engine middleware

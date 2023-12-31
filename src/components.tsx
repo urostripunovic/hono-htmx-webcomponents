@@ -37,7 +37,7 @@ export const renderer = jsxRenderer(({ children }) => {
         <title>Hono🔥 + HTMX + Web Components</title>
       </head>
       <body
-        class="flex h-screen w-full flex-col items-center justify-center gap-4 p-4"
+        class="flex w-full flex-col items-center justify-center gap-4 p-4 m-auto absolute"
       >
         ${children}
       </body>
@@ -47,14 +47,17 @@ export const renderer = jsxRenderer(({ children }) => {
 
 //Add a todo to the database
 export const AddTodo = () => (
-  <form>
-    <div class="flex flex-row gap-2">
+  <form hx-post="/jsxRender" hx-target="#uncompleted" hx-swap="beforebegin">
+    <div class="flex flex-row gap-2 justify-center mb-2">
       <input
         type="text"
         placeholder="What is there todo..."
-        class="block w-full rounded-lg bg-gray-200 p-2.5 text-xl"
+        class="block w-full rounded-lg bg-gray-200 p-2.5 text-xl max-w-lg"
       />
-      <button class="block rounded-lg bg-blue-500 px-4 py-2 text-xl font-bold text-white hover:bg-blue-700">
+      <button
+        type="submit"
+        class="block rounded-lg bg-blue-500 px-4 py-2 text-xl font-bold text-white hover:bg-blue-700"
+      >
         Add
       </button>
     </div>
@@ -62,28 +65,29 @@ export const AddTodo = () => (
 );
 
 //Iterate thorugh the todo item
-export const TodoItem = (props: { todo: Todo, type: string }) => {
+export const TodoItem = (props: { todo: Todo; type: string }) => {
   const { todoId, title, todoStatus } = props.todo;
   const isChecked = todoStatus === 1 ? true : false;
   //Edit knapp, remove knapp och complete knapp
   return (
     <div
-      id={props.type+todoId}
-      class="border-b-1 group relative mb-2 flex h-10 items-center justify-between gap-2 flex-wrap rounded border-b-gray-200 p-2 transition duration-150 ease-out odd:bg-gray-200 hover:ease-in hover:odd:bg-gray-50 hover:even:bg-gray-100"
+      id={props.type + todoId}
+      class="border-b-1 group relative mb-2 flex h-10 flex-wrap content-center items-center justify-between gap-2 rounded border-b-gray-200 p-2 text-center transition duration-150 ease-out odd:bg-gray-200 hover:ease-in hover:odd:bg-gray-50 hover:even:bg-gray-100"
     >
-      <div class="flex flex-row items-center gap-2">
+      <div class="flex flex-row gap-2">
         <input
-          id={"default-checkbox"+todoId}
+          hx-put={`/jsxRender/check/${todoId}`}
+          id={"default-checkbox" + todoId}
           checked={isChecked}
           type="checkbox"
           value=""
-          class="h-6 w-6 cursor-pointer rounded border-gray-300 bg-gray-100 text-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800"
+          class="w-6 cursor-pointer rounded border-gray-300 bg-gray-100 text-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800"
         />
         <label
-          for={"default-checkbox"+todoId}
+          for={"default-checkbox" + todoId}
           class={`cursor text-xl font-semibold ${
             isChecked ? "line-through" : ""
-          } line-clamp-3`}
+          } line-clamp-1 hover:line-clamp-none`}
         >
           {title}
         </label>
@@ -93,12 +97,22 @@ export const TodoItem = (props: { todo: Todo, type: string }) => {
         <button
           class={`${
             isChecked ? "hidden" : ""
-          } flex h-8 w-8 cursor-pointer items-center justify-center`}
+          } flex w-8 cursor-pointer items-center justify-center`}
         >
-          <i class="fas fa-edit text-cyan-600 transition-all hover:text-lg hover:text-cyan-700"></i>
+          <i
+            hx-put={`/jsxRender/edit/${todoId}`}
+            data-te-ripple-init
+            title="Edit Todo"
+            class="fas fa-edit text-cyan-600 transition-all hover:text-lg hover:text-cyan-700"
+          ></i>
         </button>
         <button class="flex w-3 cursor-pointer items-center justify-center">
-          <i class="fa fa-trash text-red-500 transition-all hover:text-lg hover:text-red-700"></i>
+          <i
+            hx-delete={`/jsxRender/todo/${todoId}`}
+            data-te-ripple-init
+            title="Delete Todo"
+            class="fa fa-trash text-red-500 transition-all hover:text-lg hover:text-red-700"
+          ></i>
         </button>
       </div>
     </div>
