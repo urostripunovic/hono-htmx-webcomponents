@@ -54,6 +54,21 @@ open http://localhost:3000/template for Template Engine rendering
 - [x] Implement load and idle from Astro's client directives
     - As of now if bundle.js is mounted on to the page and all of the imported files in client.ts will be loaded into the browser. Using something like Astro's load, idle, visible and media directives I can instead load in the javascript whenever necessary and not cache as much javascript in the browser. It would've also been cool if I could create a specific naming convention so that I retain the web components names but only add those attribues but at that point I would be DRY. Loot into this + it feels like I'm recreating [Astro](https://github.com/withastro/astro/tree/cf993bc263b58502096f00d383266cd179f331af/packages/astro/src/runtime/client). 
     - Working with islands in this way won't allow for children to be passed inside the web components unless, I change the Islands file to allow for it.
+    - I found one issue when trying to load in the web component via inside the connectedCallback via the innerHTML method. Doing it with the innerHTML doesn't allow for either HTMX or JavaScript to work probably, idk why though. So the best course of action is the call the client island component that loads in the js code into the browser and then I call the web component inside the, something like this: 
+    ```js
+    <client-island src="..." client:...>
+        <web-component>
+            ...
+        </web-component>
+    </client-island>
+    ```
+    The previous solution was:
+    ```js
+    <client-island src="..." client:...>
+            ...
+    </client-island>
+    ```
+    And inside the client-island file it mounted the component via the `this.innerHTML` function.
 - [ ] Deploy the application
     - Prod prep done with script tags
 

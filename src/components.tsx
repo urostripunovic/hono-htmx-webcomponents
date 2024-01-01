@@ -28,7 +28,6 @@ export const renderer = jsxRenderer(({ children }) => {
           </>
         )}
         <script src="https://unpkg.com/htmx.org@1.9.3"></script>
-        <script src="https://unpkg.com/hyperscript.org@0.9.9"></script>
         <script src="https://cdn.tailwindcss.com"></script>
         <link
           rel="stylesheet"
@@ -37,7 +36,7 @@ export const renderer = jsxRenderer(({ children }) => {
         <title>Hono🔥 + HTMX + Web Components</title>
       </head>
       <body
-        class="flex w-full flex-col items-center justify-center gap-4 p-4 m-auto absolute"
+        class="absolute m-auto flex w-full flex-col items-center justify-center gap-4 p-4"
       >
         ${children}
       </body>
@@ -47,13 +46,14 @@ export const renderer = jsxRenderer(({ children }) => {
 
 //Add a todo to the database
 export const AddTodo = () => (
-  <form hx-post="/jsxRender" hx-target="#uncompleted" hx-swap="beforebegin" _="on htmx:afterRequest reset() me">
-    <div class="flex flex-row gap-2 justify-center mb-2">
+  <form hx-post="/jsxRender" hx-target="#uncompleted" hx-swap="beforebegin">
+    <div class="mb-2 flex flex-row justify-center gap-2">
       <input
+        id="input"
         name="title"
         type="text"
         placeholder="What is there todo..."
-        class="block w-full rounded-lg bg-gray-200 p-2.5 text-xl max-w-lg"
+        class="block w-full max-w-lg rounded-lg bg-gray-200 p-2.5 text-xl"
       />
       <button
         type="submit"

@@ -1,21 +1,22 @@
 import components from "./views/components";
-
 class Island extends HTMLElement {
   async connectedCallback() {
     const src = this.getAttribute("src") ?? "";
     const componentLoader = components[src];
-    if (!componentLoader) throw new Error(`${src} is not a component! Check your components/index.`);
-    
+    if (!componentLoader)
+      throw new Error(
+        `${src} is not a component! Check your components/index.`,
+      );
+
     const clientMediaQuery = this.getAttribute("client:media");
     if (clientMediaQuery) await media({ query: clientMediaQuery });
     if (this.hasAttribute("client:load")) await load();
     if (this.hasAttribute("client:idle")) await idle();
     if (this.hasAttribute("client:visible")) await visible({ element: this });
+    if (this.hasAttribute("client:mouseover")) await mouseover({ element: this });
 
     const Component = (await componentLoader()).default;
-    const DefinedCustomElement = getCustomElement(Component, components[src])
-    const oldInnerHTML = this.innerHTML
-    this.innerHTML = `<${DefinedCustomElement}>${oldInnerHTML}</${DefinedCustomElement}>`;
+    getCustomElement(Component, components[src]);
   }
 }
 customElements.define("client-islands", Island);
@@ -49,6 +50,15 @@ function visible({ element }: { element: HTMLElement }) {
 }
 
 /**
+ * Hydrates the component when the mouse hovers on it.
+ */
+function mouseover({ element }: { element: HTMLElement }) {
+  return new Promise(function (resolve) {
+    element.addEventListener("mouseover", resolve, { once: true });
+  });
+}
+
+/**
  * Hydrate this component on page reload
  */
 function load() {
@@ -62,11 +72,8 @@ function load() {
  */
 function idle() {
   return new Promise(function (resolve) {
-    if ('requestIdleCallback' in window) {
-      (window as any).requestIdleCallback(resolve);
-    } else {
-      setTimeout(resolve, 200);
-    }
+    if ("requestIdleCallback" in window) (window as any).requestIdleCallback(resolve);
+    else setTimeout(resolve, 200);
   });
 }
 
@@ -76,9 +83,11 @@ function idle() {
  * @returns the name of the custom element of that @component @src
  */
 function getCustomElement(Component: any, src: () => void) {
-  const CustomElement = new Component().CustomElementsName
+  const CustomElement = new Component().CustomElementsName;
   if (!customElements.get(CustomElement)) {
-    throw new Error(`${CustomElement} is not a defined custom element in ${src}.`);
+    throw new Error(
+      `${CustomElement} is not a defined custom element in ${src}.`,
+    );
   }
-  return CustomElement
+  return CustomElement;
 }
