@@ -15,8 +15,7 @@ class Island extends HTMLElement {
     if (this.hasAttribute("client:visible")) await visible({ element: this });
     if (this.hasAttribute("client:mouseover")) await mouseover({ element: this });
 
-    const Component = (await componentLoader()).default;
-    getCustomElement(Component, components[src]);
+    (await componentLoader()).default;
   }
 }
 customElements.define("client-islands", Island);
@@ -75,19 +74,4 @@ function idle() {
     if ("requestIdleCallback" in window) (window as any).requestIdleCallback(resolve);
     else setTimeout(resolve, 200);
   });
-}
-
-/**
- * @param Component is the instance of the web components exported class code
- * @param src is the import function used for error handling
- * @returns the name of the custom element of that @component @src
- */
-function getCustomElement(Component: any, src: () => void) {
-  const CustomElement = new Component().CustomElementsName;
-  if (!customElements.get(CustomElement)) {
-    throw new Error(
-      `${CustomElement} is not a defined custom element in ${src}.`,
-    );
-  }
-  return CustomElement;
 }

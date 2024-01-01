@@ -61,7 +61,6 @@ app.get("/jsxRender", (c) => {
             <AddTodo />
           </todo-form>
         </client-islands>
-
         <span class="flex flex-wrap gap-2 md:grid md:grid-cols-3">
           <div class="w-full">
             <h1 class="text-xl font-thin"> Todos </h1>

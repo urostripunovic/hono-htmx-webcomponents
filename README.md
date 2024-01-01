@@ -42,6 +42,7 @@ open http://localhost:3000/template for Template Engine rendering
     - I tried again after integrating vite into my dev experience. Same conclusion as before using a link tag will take a while before the css loads in... I'll see how the dev experience is affected when working with css in this way.
 - [ ] Implement the Todo app, use [tRPC](https://trpc.io/) or just [htmx](https://htmx.org/) for the client component
     - [ ] In JSX render 
+        - [ ] Change the database to support better id handling when it comes to inserting.
         - [ ] Put JSX todo in a different route
     - [ ] HTML static files
         - [ ] Put HTML todo in a different route

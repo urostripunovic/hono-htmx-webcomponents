@@ -49,6 +49,7 @@ export const AddTodo = () => (
   <form hx-post="/jsxRender" hx-target="#uncompleted" hx-swap="beforebegin">
     <div class="mb-2 flex flex-row justify-center gap-2">
       <input
+        required
         id="input"
         name="title"
         type="text"
