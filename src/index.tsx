@@ -36,17 +36,17 @@ declare module "hono" {
 }
 
 export type Todo = {
-  todoId: string;
+  id: string;
   title: string;
-  todoStatus: number;
+  status: number;
 };
 
 app.get("/jsxRender", (c) => {
   const completedTodos = db
-    .prepare("SELECT * FROM todo WHERE todoStatus = 1")
+    .prepare("SELECT * FROM todo WHERE status = 1")
     .all() as unknown[] as Todo[];
   const uncompletedTodos = db
-    .prepare("SELECT * FROM todo WHERE todoStatus = 0")
+    .prepare("SELECT * FROM todo WHERE status = 0")
     .all() as unknown[] as Todo[];
   return c.render(
     <>
@@ -54,28 +54,29 @@ app.get("/jsxRender", (c) => {
         Hono🔥 + HTMX + Web Components
       </h1>
       <div>
-        {/*Change to grid instead*/}
-
         <client-islands src="TodoForm" client:mouseover>
           <todo-form>
             <AddTodo />
           </todo-form>
         </client-islands>
+
         <span class="flex flex-wrap gap-2 md:grid md:grid-cols-3">
           <div class="w-full">
             <h1 class="text-xl font-thin"> Todos </h1>
             {uncompletedTodos.map((todo) => (
-              <TodoItem todo={todo} type={"uncompleted"} />
+              <TodoItem todo={todo} />
             ))}
             <div id="uncompleted"></div>
           </div>
+
           <div class="w-full">
             <h1 class="text-xl font-thin"> Completed Todos </h1>
             {completedTodos.map((todo) => (
-              <TodoItem todo={todo} type={"completed"} />
+              <TodoItem todo={todo} />
             ))}
             <div id="completed"></div>
           </div>
+
           <client-islands src="DeletedTodos" client:idle>
             <deleted-todos>
               <p id="cool-ptag" class="font-bold">
@@ -99,42 +100,33 @@ app.post(
   ),
   (c) => {
     const { title } = c.req.valid("form");
-    console.log("HTMX post request works", title);
+    const id = crypto.randomUUID();
     //get the value from the form and insert it at the top
+    db.prepare('INSERT INTO todo (id, title, status) VALUES (?, ?, ?)').run(id, title, 0);
     return c.html(
-      <TodoItem
-        todo={{ todoId: "6", todoStatus: 0, title: "test2" }}
-        type={"uncompleted"}
-      />,
+      <>
+        <TodoItem todo={{ id: id, title: title, status: 0 }} />
+        <div id="uncompleted"></div>
+      </>,
     );
   },
 );
 
-app.post("/jsxRender2", (c) => {
-  console.log("HTMX post request works");
-  //get the value from the form and insert it at the top
-  return c.html(
-    <TodoItem
-      todo={{ todoId: "6", todoStatus: 0, title: "test2" }}
-      type={"uncompleted"}
-    />,
-  );
-});
-
 app.put("/jsxRender/check/:id", (c) => {
-  console.log("HTMX post check works");
+  console.log("HTMX put check works");
   return c.body(null, 204);
 });
 
 app.put("/jsxRender/edit/:id", (c) => {
-  console.log("HTMX post edit works");
+  console.log("HTMX put edit works");
   return c.body(null, 204);
 });
 
 app.delete("/jsxRender/todo/:id", (c) => {
   const id = c.req.param("id");
   console.log("HTMX delete edit works", id);
-  return c.body(null, 204);
+  c.status(200);
+  return c.body(null);
 });
 
 //Template engine middleware

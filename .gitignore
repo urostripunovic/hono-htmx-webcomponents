@@ -1,6 +1,6 @@
 todo.db
-todo.db-shm
-todo.db-wal
+*.db-shm
+*.db-wal
 .env
 
 # Logs
