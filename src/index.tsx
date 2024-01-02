@@ -14,6 +14,7 @@ db.pragma("journal_mode = WAL");
 
 //const stm = db.prepare('SELECT * FROM todo');
 //console.log(stm.all())
+//db.prepare('INSERT INTO todo (id, title, status) VALUES (?, ?, ?)').run(crypto.randomUUID(), "test clear done", 1);
 
 type Bindings = {
   DB: db;
@@ -54,7 +55,7 @@ app.get("/jsxRender", (c) => {
         Hono🔥 + HTMX + Web Components
       </h1>
       <div>
-        <client-islands src="TodoForm" client:mouseover>
+        <client-islands src="todo-form" client:mouseover>
           <todo-form>
             <AddTodo />
           </todo-form>
@@ -90,6 +91,16 @@ app.get("/jsxRender", (c) => {
   );
 });
 
+app.put("/jsxRender/edit/:id", (c) => {
+  console.log("HTMX put edit works");
+  return c.body(null, 204);
+});
+
+app.put("/jsxRender/check/:id", (c) => {
+  console.log("HTMX put check works");
+  return c.body(null, 204);
+});
+
 app.post(
   "/jsxRender",
   zValidator(
@@ -107,26 +118,15 @@ app.post(
       <>
         <TodoItem todo={{ id: id, title: title, status: 0 }} />
         <div id="uncompleted"></div>
-      </>,
+      </>
     );
   },
 );
 
-app.put("/jsxRender/check/:id", (c) => {
-  console.log("HTMX put check works");
-  return c.body(null, 204);
-});
-
-app.put("/jsxRender/edit/:id", (c) => {
-  console.log("HTMX put edit works");
-  return c.body(null, 204);
-});
-
 app.delete("/jsxRender/todo/:id", (c) => {
   const id = c.req.param("id");
-  console.log("HTMX delete edit works", id);
-  c.status(200);
-  return c.body(null);
+  db.prepare('DELETE FROM todo WHERE id = ?').run(id)
+  return c.body(null, 200);
 });
 
 //Template engine middleware

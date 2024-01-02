@@ -9,6 +9,8 @@ export default class TodoForm extends HTMLElement {
   }
 
   connectedCallback() {
+    this.addEventListener('input', (e: Event) => console.log((e.target as HTMLInputElement)?.value))
+
     this.addEventListener("htmx:afterRequest", () => {
       this.querySelector("form")?.reset();
     });

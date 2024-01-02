@@ -72,13 +72,13 @@ export const TodoItem = (props: { todo: Todo }) => {
   //Edit knapp, remove knapp och complete knapp
   return (
     <div
-      id={id}
+      id={"parent" + id}
+      name="test"
       class="border-b-1 group relative mb-2 flex h-10 flex-wrap content-center items-center justify-between gap-2 rounded border-b-gray-200 p-2 text-center transition duration-150 ease-out odd:bg-gray-200 hover:ease-in hover:odd:bg-gray-50 hover:even:bg-gray-100"
     >
       <div class="flex flex-row gap-2">
         <input
           hx-put={`/jsxRender/check/${id}`}
-          id={id}
           checked={isChecked}
           type="checkbox"
           value=""
@@ -93,23 +93,26 @@ export const TodoItem = (props: { todo: Todo }) => {
           {title}
         </label>
       </div>
-      {/*add a delete input as well as a edit input*/}
       <div class="invisible flex flex-row gap-1 group-hover:visible">
         <button
           class={`${
             isChecked ? "hidden" : ""
           } flex w-8 cursor-pointer items-center justify-center`}
+          hx-put={`/jsxRender/edit/${id}`}
         >
           <i
-            hx-put={`/jsxRender/edit/${id}`}
             data-te-ripple-init
             title="Edit Todo"
             class="fas fa-edit text-cyan-600 transition-all hover:text-lg hover:text-cyan-700"
           ></i>
         </button>
-        <button class="flex w-3 cursor-pointer items-center justify-center">
+        <button
+          class="flex w-3 cursor-pointer items-center justify-center"
+          hx-delete={`/jsxRender/todo/${id}`}
+          hx-target={"#parent" + id}
+          hx-swap="outerHTML"
+        >
           <i
-            hx-delete={`/jsxRender/todo/${id}`}
             data-te-ripple-init
             title="Delete Todo"
             class="fa fa-trash text-red-500 transition-all hover:text-lg hover:text-red-700"
