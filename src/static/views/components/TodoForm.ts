@@ -1,11 +1,11 @@
 export default class TodoForm extends HTMLElement {
-  //private shadow: ShadowRoot;
+  shadowRoot: ShadowRoot;
   private template: HTMLTemplateElement = document.createElement('template');
     constructor() {
     super();
-    //this.shadow = this.attachShadow({ mode: 'open' });
-    //this.template.innerHTML = '<slot/>';
-    //this.shadow.appendChild(this.template.content.cloneNode(true))
+    this.shadowRoot = this.attachShadow({ mode: 'open' });
+    this.template.innerHTML = '<slot/>';
+    this.shadowRoot.append(this.template.content.cloneNode(true))
   }
 
   connectedCallback() {
