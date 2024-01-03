@@ -1,18 +1,57 @@
 export default class TodoForm extends HTMLElement {
+  private template: HTMLTemplateElement = document.createElement("template");
   shadowRoot: ShadowRoot;
-  private template: HTMLTemplateElement = document.createElement('template');
-    constructor() {
+  constructor() {
     super();
-    this.shadowRoot = this.attachShadow({ mode: 'open' });
-    this.template.innerHTML = '<slot/>';
-    this.shadowRoot.append(this.template.content.cloneNode(true))
+    this.shadowRoot = this.attachShadow({ mode: "open" });
+    this.template.innerHTML = `
+    <style>
+      .center-text {
+        text-align: center;
+        color: #ef4444;
+        font-size: 1rem;
+        line-height: 1.5rem;
+        display: block;
+      }
+      .start-text {
+        display: none;
+      }
+    </style>
+    <slot/>
+    `;
+    this.shadowRoot.appendChild(this.template.content.cloneNode(true));
   }
 
   connectedCallback() {
-    this.addEventListener('input', (e: Event) => console.log((e.target as HTMLInputElement)?.value))
+    this.inputCSSField();
+    this.inputErrorHandling();
+  }
 
-    this.addEventListener("htmx:afterRequest", () => {
-      this.querySelector("form")?.reset();
+  private inputCSSField() {
+    this.addEventListener("input", (e: Event) => {
+      const input = this.querySelector("form div input");
+      const styles =
+        "shadow appearance-none border border-red-500 rounded leading-tight focus:outline-none focus:shadow-outline".split(
+          " ",
+        );
+      if ((e.target as HTMLInputElement)?.value.length < 3)
+        input?.classList.add(...styles);
+      else input?.classList.remove(...styles);
+    });
+  }
+
+  private inputErrorHandling() {
+    const p = document.createElement("p");
+    this.addEventListener("htmx:afterRequest", (ev) => {
+      //@ts-ignore
+      if (!ev.detail.failed) {
+        this.shadowRoot.querySelector("p")?.remove();
+        this.querySelector("form")?.reset();
+      } else {
+        this.shadowRoot.appendChild(p);
+        p.innerHTML =
+          '<p class="center-text"> The todo needs to be at least 3 characters long </p>';
+      }
     });
   }
 }

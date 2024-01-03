@@ -4,7 +4,7 @@ import { logger } from "hono/logger";
 import { secureHeaders } from "hono/secure-headers";
 import { serveStatic } from "@hono/node-server/serve-static";
 import Database, { Database as db } from "better-sqlite3";
-import { AddTodo, TodoItem, renderer } from "./components";
+import { AddTodo, EditTodo, TodoItem, renderer } from "./components";
 import { squirrelly } from "./middleware/squirrelly";
 import { z } from "zod";
 import { zValidator } from "@hono/zod-validator";
@@ -61,48 +61,58 @@ app.get("/jsxRender", (c) => {
           </todo-form>
         </client-islands>
 
-        <span class="flex flex-wrap gap-2 md:grid md:grid-cols-3">
-          <div class="w-full">
-            <h1 class="text-xl font-thin"> Todos </h1>
-            {uncompletedTodos.map((todo) => (
-              <TodoItem todo={todo} />
-            ))}
-            <div id="uncompleted"></div>
-          </div>
+        <client-islands src="swap-todos" client:mouseover>
+          <swap-todos>
+            <span class="flex flex-wrap gap-2 md:grid md:grid-cols-3">
+              <div class="w-full">
+                <h1 class="text-xl font-thin"> Todos </h1>
+                {uncompletedTodos.map((todo) => (
+                  <TodoItem todo={todo} />
+                ))}
+                <div id="uncompleted"></div>
+              </div>
 
-          <div class="w-full">
-            <h1 class="text-xl font-thin"> Completed Todos </h1>
-            {completedTodos.map((todo) => (
-              <TodoItem todo={todo} />
-            ))}
-            <div id="completed"></div>
-          </div>
+              <div class="w-full">
+                <h1 class="text-xl font-thin"> Completed Todos </h1>
+                {completedTodos.map((todo) => (
+                  <TodoItem todo={todo} />
+                ))}
+                <div id="completed"></div>
+              </div>
 
-          <client-islands src="DeletedTodos" client:idle>
-            <deleted-todos>
-              <p id="cool-ptag" class="font-bold">
-                Hej hej
-              </p>
-            </deleted-todos>
-          </client-islands>
-        </span>
+              <client-islands src="DeletedTodos" client:idle>
+                <deleted-todos>
+                  <p id="cool-ptag" class="font-bold">
+                    Hej hej
+                  </p>
+                </deleted-todos>
+              </client-islands>
+            </span>
+          </swap-todos>
+        </client-islands>
       </div>
     </>,
   );
 });
 
-app.put("/jsxRender/edit/:id", (c) => {
-  console.log("HTMX put edit works");
-  return c.body(null, 204);
-});
-
 app.put("/jsxRender/check/:id", (c) => {
-  console.log("HTMX put check works");
-  return c.body(null, 204);
+  const { id } = c.req.param();
+  const { title, status } = c.req.query();
+  const newStatus = status === "true" ? 0 : 1; //ska bli noll
+  const outerHTML = Boolean(newStatus) ? "completed" : "uncompleted";
+  db.prepare("UPDATE todo SET status = ? WHERE id = ?").run(newStatus, id);
+  console.log(status, newStatus, outerHTML);
+  //return c.body(null, 200);
+  return c.html(
+    <>
+      <TodoItem todo={{ id: id, title: title, status: newStatus }} />
+      <div id={outerHTML}></div>
+    </>,
+  );
 });
 
-app.post(
-  "/jsxRender",
+app.put(
+  "/jsxRender/edit/:id",
   zValidator(
     "form",
     z.object({
@@ -110,22 +120,58 @@ app.post(
     }),
   ),
   (c) => {
+    const id = c.req.param("id");
+    const { title } = c.req.valid("form");
+    db.prepare("UPDATE todo SET title = ? WHERE id = ?").run(title, id);
+    return c.html(<TodoItem todo={{ id: id, title: title, status: 0 }} />);
+  },
+);
+
+app.get("/jsxRender/edit/:id", (c) => {
+  const id = c.req.param("id");
+  const { title, status } = db
+    .prepare("SELECT title, status FROM todo WHERE id = ?")
+    .get(id) as unknown as any;
+  return c.html(<EditTodo todo={{ id: id, title: title, status: status }} />);
+});
+
+app.get("/jsxRender/:id", (c) => {
+  const param_id = c.req.param("id");
+  const { id, title, status } = db
+    .prepare("SELECT * FROM todo WHERE id = ?")
+    .get(param_id) as unknown as any;
+  return c.html(<TodoItem todo={{ id: id, title: title, status: status }} />);
+});
+
+app.post(
+  "/jsxRender",
+  zValidator(
+    "form",
+    z.object({
+      title: z.string().min(3),
+    }),
+  ),
+  (c) => {
     const { title } = c.req.valid("form");
     const id = crypto.randomUUID();
     //get the value from the form and insert it at the top
-    db.prepare('INSERT INTO todo (id, title, status) VALUES (?, ?, ?)').run(id, title, 0);
+    db.prepare("INSERT INTO todo (id, title, status) VALUES (?, ?, ?)").run(
+      id,
+      title,
+      0,
+    );
     return c.html(
       <>
         <TodoItem todo={{ id: id, title: title, status: 0 }} />
         <div id="uncompleted"></div>
-      </>
+      </>,
     );
   },
 );
 
 app.delete("/jsxRender/todo/:id", (c) => {
   const id = c.req.param("id");
-  db.prepare('DELETE FROM todo WHERE id = ?').run(id)
+  db.prepare("DELETE FROM todo WHERE id = ?").run(id);
   return c.body(null, 200);
 });
 

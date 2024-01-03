@@ -65,6 +65,30 @@ export const AddTodo = () => (
   </form>
 );
 
+export const EditTodo = (props: { todo: Todo }) => {
+  const { id, title } = props.todo;
+  return (
+    <form hx-put={`/jsxRender/edit/${id}`} hx-target="this" hx-swap="outerHTML">
+      <div class="mb-2 flex w-full flex-wrap content-center items-center justify-between border-b-2 border-teal-500 p-2 text-center md:max-w-72">
+        <span class="flex flex-row">
+          <input
+            class="max-w-52 appearance-none border-none bg-transparent align-top text-xl font-semibold leading-tight text-gray-700 focus:outline-none"
+            type="text"
+            name="title"
+            value={title}
+          />
+        </span>
+        <span class="flex flex-row">
+          <button class="cursor-pointer">✔️</button>
+          <button class="cursor-pointer" hx-get={`/jsxRender/${id}`}>
+            ❌
+          </button>
+        </span>
+      </div>
+    </form>
+  );
+};
+
 //Iterate thorugh the todo item
 export const TodoItem = (props: { todo: Todo }) => {
   const { id, title, status } = props.todo;
@@ -72,21 +96,23 @@ export const TodoItem = (props: { todo: Todo }) => {
   //Edit knapp, remove knapp och complete knapp
   return (
     <div
+      name="parent"
       id={"parent" + id}
-      name="test"
-      class="border-b-1 group relative mb-2 flex h-10 flex-wrap content-center items-center justify-between gap-2 rounded border-b-gray-200 p-2 text-center transition duration-150 ease-out odd:bg-gray-200 hover:ease-in hover:odd:bg-gray-50 hover:even:bg-gray-100"
+      class="border-b-1 group relative mb-2 flex w-full flex-wrap content-center items-center justify-between gap-2 rounded border-b-gray-200 p-2 text-center transition duration-150 ease-out odd:bg-gray-200 hover:ease-in hover:odd:bg-gray-50 hover:even:bg-gray-100 md:max-w-72"
     >
       <div class="flex flex-row gap-2">
         <input
-          hx-put={`/jsxRender/check/${id}`}
+          id={id}
+          hx-put={`/jsxRender/check/${id}?title=${title}&status=${isChecked}`}
           checked={isChecked}
+          hx-target={isChecked ? "#uncompleted" : "#completed"}
+          hx-swap="outerHTML"
           type="checkbox"
-          value=""
           class="w-6 cursor-pointer rounded border-gray-300 bg-gray-100 text-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800"
         />
         <label
-          for={"default-checkbox" + id}
-          class={`cursor text-xl font-semibold ${
+          for={id}
+          class={`cursor truncate text-xl font-semibold ${
             isChecked ? "line-through" : ""
           } line-clamp-1 hover:line-clamp-none`}
         >
@@ -98,7 +124,10 @@ export const TodoItem = (props: { todo: Todo }) => {
           class={`${
             isChecked ? "hidden" : ""
           } flex w-8 cursor-pointer items-center justify-center`}
-          hx-put={`/jsxRender/edit/${id}`}
+          //hx-put={`/jsxRender/edit/${id}`}
+          hx-get={`/jsxRender/edit/${id}`}
+          hx-target={"#parent" + id}
+          hx-swap="outerHTML"
         >
           <i
             data-te-ripple-init
