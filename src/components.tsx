@@ -111,7 +111,7 @@ export const TodoItem = (props: { todo: Todo }) => {
           class="w-6 cursor-pointer rounded border-gray-300 bg-gray-100 text-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800"
         />
         <label
-          for={id}
+          for={"title" + id}
           class={`cursor truncate text-xl font-semibold ${
             isChecked ? "line-through" : ""
           } line-clamp-1 hover:line-clamp-none`}
@@ -137,9 +137,10 @@ export const TodoItem = (props: { todo: Todo }) => {
         </button>
         <button
           class="flex w-3 cursor-pointer items-center justify-center"
-          hx-delete={`/jsxRender/todo/${id}`}
-          hx-target={"#parent" + id}
+          hx-delete={`/jsxRender/todo/${id}?title=${title}&status=${isChecked}`}
+          hx-target="#deletedtodo" //{"#parent" + id}
           hx-swap="outerHTML"
+          id={id}
         >
           <i
             data-te-ripple-init
@@ -147,6 +148,28 @@ export const TodoItem = (props: { todo: Todo }) => {
             class="fa fa-trash text-red-500 transition-all hover:text-lg hover:text-red-700"
           ></i>
         </button>
+      </div>
+    </div>
+  );
+};
+
+export const DeletedTodo = (props: { todo: Todo }) => {
+  const { id, title, status } = props.todo;
+  const isChecked = status === 1 ? true : false;
+  return (
+    <div
+      name="parent"
+      id={"parent" + id}
+      class="border-b-1 group relative mb-2 flex w-full flex-wrap content-center items-center justify-between gap-2 rounded border-b-gray-200 p-2 text-center transition duration-150 ease-out odd:bg-gray-200 hover:ease-in hover:odd:bg-gray-50 hover:even:bg-gray-100 md:max-w-72"
+    >
+      <div class="flex flex-row gap-2">
+        <label
+          class={`truncate text-xl font-semibold ${
+            isChecked ? "line-through" : ""
+          } line-clamp-1 hover:line-clamp-none`}
+        >
+          {title}
+        </label>
       </div>
     </div>
   );
