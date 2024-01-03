@@ -31,7 +31,7 @@ export default class TodoForm extends HTMLElement {
     this.addEventListener("input", (e: Event) => {
       const input = this.querySelector("form div input");
       const styles =
-        "shadow appearance-none border border-red-500 rounded leading-tight focus:outline-none focus:shadow-outline".split(
+        "focus:shadow-outline appearance-none rounded border border-red-500 leading-tight shadow focus:outline-none".split(
           " ",
         );
       if ((e.target as HTMLInputElement)?.value.length < 3)

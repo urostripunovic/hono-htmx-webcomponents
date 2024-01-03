@@ -64,7 +64,7 @@ app.get("/jsxRender", (c) => {
         <client-islands src="swap-todos" client:mouseover>
           <swap-todos>
             <span class="flex flex-wrap gap-2 md:grid md:grid-cols-3">
-              <div class="w-full">
+              <div id="NotCompletedParent" class="w-full">
                 <h1 class="text-xl font-thin"> Todos </h1>
                 {uncompletedTodos.map((todo) => (
                   <TodoItem todo={todo} />
@@ -72,7 +72,7 @@ app.get("/jsxRender", (c) => {
                 <div id="uncompleted"></div>
               </div>
 
-              <div class="w-full">
+              <div id="CompletedParent" class="w-full">
                 <h1 class="text-xl font-thin"> Completed Todos </h1>
                 {completedTodos.map((todo) => (
                   <TodoItem todo={todo} />
@@ -111,13 +111,15 @@ app.put("/jsxRender/check/:id", (c) => {
   );
 });
 
+export const schema = z.object({
+  title: z.string().min(3),
+});
+
 app.put(
   "/jsxRender/edit/:id",
   zValidator(
     "form",
-    z.object({
-      title: z.string().min(1),
-    }),
+    schema,
   ),
   (c) => {
     const id = c.req.param("id");
@@ -147,9 +149,7 @@ app.post(
   "/jsxRender",
   zValidator(
     "form",
-    z.object({
-      title: z.string().min(3),
-    }),
+    schema,
   ),
   (c) => {
     const { title } = c.req.valid("form");

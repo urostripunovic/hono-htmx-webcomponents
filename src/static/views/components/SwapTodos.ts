@@ -1,12 +1,8 @@
 export default class SwapTodos extends HTMLElement {
-  constructor() {
-    super();
-  }
-
   connectedCallback() {
-    this.addEventListener("input", (e: any) => {
+    this.addEventListener("htmx:beforeRequest", (e: any) => {
       const id = "parent" + e.target.id;
-      document.getElementById(id)?.classList.add("hidden");
+      document.getElementById(id)?.remove();
     });
   }
 }
