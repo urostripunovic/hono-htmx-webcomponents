@@ -41,17 +41,14 @@ open http://localhost:3000/template for Template Engine rendering
     - Didn't need to copy Lit, all I need is to build the tailwind css file every time I add a tailwind class, it builds pretty fast still but I don't think this is actually the most optimal solution especially if one wants to use the shadowdom. I want the css and component to mount together but, I tried using css modules but it doesn't seem to work for some reason. The best solution is to honestly not use the shadow dom when working with Web components so they won't be reusable in the sense that if I were to reuse a component I must use tailwind unless I'm shipping a bunch of tailwind code as well.
     - I tried again after integrating vite into my dev experience. Same conclusion as before using a link tag will take a while before the css loads in... I'll see how the dev experience is affected when working with css in this way.
 - [ ] Implement the Todo app, use [tRPC](https://trpc.io/) or just [htmx](https://htmx.org/) for the client component
-    - [ ] In JSX render 
-        - [ ] Change the database to support better id handling when it comes to inserting.
+    - [x] In JSX render 
+        - [x] Change the database to support better id handling when it comes to inserting.
         - [ ] Put JSX todo in a different route
     - [ ] HTML static files
         - [ ] Put HTML todo in a different route
-    - [ ] Check out AlpineJs.
 - [x] Add Vite dev server support for HMR when developing
     - I didn't like the fact that I needed to manually refresh the page whenever I made some changes. I already have vite for building my web components there shouldn't be any issues of trying to integrate it towards my project as well.
     - Wasn't that hard to implement, the `compress()` middleware broke the page but other than that hono has support for vite and if I want to reload the page after a change to my static files then I needed to install a vite plug in called vite restart.
-- [ ] Create a lazy loaded component of a simple navbar that takes you between, jsx render and template render.
-    - [ ] Try and lazy load a AlpineJS component
 - [x] Implement load and idle from Astro's client directives
     - As of now if bundle.js is mounted on to the page and all of the imported files in client.ts will be loaded into the browser. Using something like Astro's load, idle, visible and media directives I can instead load in the javascript whenever necessary and not cache as much javascript in the browser. It would've also been cool if I could create a specific naming convention so that I retain the web components names but only add those attribues but at that point I would be DRY. Loot into this + it feels like I'm recreating [Astro](https://github.com/withastro/astro/tree/cf993bc263b58502096f00d383266cd179f331af/packages/astro/src/runtime/client). 
     - Working with islands in this way won't allow for children to be passed inside the web components unless, I change the Islands file to allow for it.
@@ -78,5 +75,4 @@ open http://localhost:3000/template for Template Engine rendering
 - [ ] SonikJS, Honos version of what I want to do with routing but with jsx and island solutions like Astro I think.
     - [x] Whiteboard dev has an example uploaded to [youtube](https://www.youtube.com/watch?v=Ptqaqls2SYo)
     - [ ] There is a [npm package](https://www.npmjs.com/package/express-file-routing) middleware I might have to create my own middleware 
-- [ ] See if I can contribute to [SquirrellyJS](https://squirrelly.js.org/) in someway.
-- [ ] Create intellisense and auto complete for SquirrellyJS?
+- [ ] Create a template engine middleware for hono, that is typesafe and can be used with cloudflare. I don't want to work with JSX

@@ -96,7 +96,6 @@ export const TodoItem = (props: { todo: Todo }) => {
   //Edit knapp, remove knapp och complete knapp
   return (
     <div
-      name="parent"
       id={"parent" + id}
       class="border-b-1 group relative mb-2 flex w-full flex-wrap content-center items-center justify-between gap-2 rounded border-b-gray-200 p-2 text-center transition duration-150 ease-out odd:bg-gray-200 hover:ease-in hover:odd:bg-gray-50 hover:even:bg-gray-100 md:max-w-72"
     >
@@ -158,12 +157,12 @@ export const DeletedTodo = (props: { todo: Todo }) => {
   const isChecked = status === 1 ? true : false;
   return (
     <div
-      name="parent"
       id={"parent" + id}
       class="border-b-1 group relative mb-2 flex w-full flex-wrap content-center items-center justify-between gap-2 rounded border-b-gray-200 p-2 text-center transition duration-150 ease-out odd:bg-gray-200 hover:ease-in hover:odd:bg-gray-50 hover:even:bg-gray-100 md:max-w-72"
     >
       <div class="flex flex-row gap-2">
         <label
+          for={'deleted'+id}
           class={`truncate text-xl font-semibold ${
             isChecked ? "line-through" : ""
           } line-clamp-1 hover:line-clamp-none`}

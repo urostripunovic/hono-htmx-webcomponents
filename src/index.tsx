@@ -90,6 +90,12 @@ app.get("/jsxRender", (c) => {
                   <deleted-todos>
                     <h1 class="text-xl font-thin"> Deleted Todos </h1>
                     <div id="deletedtodo"></div>
+                    <button
+                      id="clearDeletedTodos"
+                      class="block justify-center rounded-lg bg-red-500 px-4 py-2 text-xl font-bold text-white hover:bg-red-700"
+                    >
+                      Clear
+                    </button>
                   </deleted-todos>
                 </client-islands>
               </div>
@@ -164,7 +170,7 @@ app.post("/jsxRender", zValidator("form", schema), (c) => {
 app.delete("/jsxRender/todo/:id", (c) => {
   const id = c.req.param("id");
   const { title, status } = c.req.query();
-  //db.prepare("DELETE FROM todo WHERE id = ?").run(id);
+  db.prepare("DELETE FROM todo WHERE id = ?").run(id);
   //return c.body(null, 200);
   const newStatus = status === "true" ? 1 : 0;
   console.log(newStatus);
