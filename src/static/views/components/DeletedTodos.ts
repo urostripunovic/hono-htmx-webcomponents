@@ -32,7 +32,6 @@ export default class DeletedTodos extends HTMLElement {
   private insertDeletedTodos(deletedTodos: string[]) {
     this.addEventListener("htmx:afterSettle", (ev: Event) => {
       if ((ev.target as Element)?.id.includes("parent")) {
-        console.log("en till delete");
         const target = document.getElementById((ev.target as Element)?.id);
         deletedTodos.push(target?.outerHTML!);
         localStorage.setItem("deleted-todos", JSON.stringify(deletedTodos));

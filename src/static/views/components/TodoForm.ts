@@ -46,7 +46,7 @@ export default class TodoForm extends HTMLElement {
       //@ts-ignore
       if (!ev.detail.failed) {
         this.shadowRoot.querySelector("p")?.remove();
-        this.querySelector("form")?.reset();
+        //this.querySelector("form")?.reset();
       } else {
         this.shadowRoot.appendChild(p);
         p.innerHTML =
