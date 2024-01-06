@@ -1,7 +1,6 @@
 export default class DeletedTodos extends HTMLElement {
   connectedCallback() {
-    const deletedTodos: string[] =
-      JSON.parse(localStorage.getItem("deleted-todos")!) || [];
+    const deletedTodos: string[] = JSON.parse(localStorage.getItem("deleted-todos")!) || [];
     this.initDeletedTodos(deletedTodos);
     this.insertDeletedTodos(deletedTodos);
     this.clearLocalStorage();
