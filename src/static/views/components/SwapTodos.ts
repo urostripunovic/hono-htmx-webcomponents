@@ -4,7 +4,6 @@ export default class SwapTodos extends HTMLElement {
       const id = "parent" + e.target.id;
       document.getElementById(id)?.remove();
     });
-    
   }
 }
 
