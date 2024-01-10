@@ -22,11 +22,15 @@ db.pragma("journal_mode = WAL");
 //console.log(stm.all())
 //db.prepare('INSERT INTO todo (id, title, status) VALUES (?, ?, ?)').run(crypto.randomUUID(), "test clear done", 1);
 
+type Variables = {
+  user: string;
+};
+
 type Bindings = {
   DB: db;
 };
 
-const app = new Hono<{ Bindings: Bindings }>();
+const app = new Hono<{ Bindings: Bindings, Variables: Variables }>();
 //app.use('*', serveStatic({ root: './' })) //undvik att använda * för att servera filer för de har tillgång till databasen på detta sätt
 app.use("/dist/*", serveStatic({ root: "./" }));
 app.use("*", cors(), logger(), secureHeaders());

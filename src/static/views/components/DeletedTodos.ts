@@ -16,18 +16,23 @@ export default class DeletedTodos extends HTMLElement {
   }
 
   private initDeletedTodos(deletedTodos: string[]) {
+    const fragment = document.createDocumentFragment();
     if (!!deletedTodos) {
       deletedTodos.map((todo: string) => {
         const div = document.createElement("div");
         div.innerHTML = todo;
-        const insertAnchor = this.querySelector("#deletedtodo");
+        /*const insertAnchor = this.querySelector("#deletedtodo");
         insertAnchor?.insertAdjacentElement(
           "beforebegin",
           <Element>div.firstChild,
-        );
+        );*/
+        fragment.appendChild(<Element>div.firstChild);
       });
+      const insertAnchor = this.querySelector("#deletedtodo");
+      this.insertBefore(fragment, insertAnchor);
     }
   }
+
 
   private insertDeletedTodos(deletedTodos: string[]) {
     this.addEventListener("htmx:afterSettle", (ev: Event) => {
